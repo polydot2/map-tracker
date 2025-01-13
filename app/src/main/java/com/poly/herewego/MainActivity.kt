@@ -4,8 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
@@ -13,19 +14,17 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Place
-import androidx.compose.material.icons.sharp.Home
-import androidx.compose.material.icons.sharp.Menu
-import androidx.compose.material.icons.sharp.Place
 import androidx.compose.material.icons.sharp.Settings
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -34,6 +33,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.poly.herewego.ui.discover.DiscoverScreen
+import com.poly.herewego.ui.map.MapScreen
 import com.poly.herewego.ui.theme.HerewegoTheme
 import kotlinx.serialization.Serializable
 
@@ -94,14 +95,10 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     NavHost(navController, startDestination = Map(id = "ok"), Modifier.padding(innerPadding)) {
                         composable<Map> {
-                            MapScreen(
-                                "Map screen",
-                                navigateToFriendProfile = { _ -> })
+                            MapScreen()
                         }
                         composable<Places> {
-                            DiscoverScreen(
-                                "Discover screen"
-                            )
+                            DiscoverScreen()
                         }
                         composable<Settings> { backStackEntry ->
                             val profile = backStackEntry.toRoute<Settings>()
@@ -116,26 +113,34 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun MapScreen(
-    name: String,
-    navigateToFriendProfile: (friendUserId: String) -> Unit
-) {
-    Column {
-        Text(name)
-        Button(onClick = {}) { Text("return to another thing ?") }
-    }
-}
+//@Composable
+//fun MapScreen(
+//    name: String,
+//    navigateToFriendProfile: (friendUserId: String) -> Unit
+//) {
+//    Column(modifier = Modifier.padding(12.dp)) {
+//        Text(name)
+//        Button(onClick = {}) { Text("return to another thing ?") }
+//    }
+//}
 
 @Composable
 fun SettingsScreen(name: String, navigateToFriendProfile: (friendUserId: String) -> Unit) {
-    Text("Settings")
-}
-
-@Composable
-fun DiscoverScreen(name: String,
-) {
-    Column {
-        Text("DiscoverScreen")
+    Column(modifier = Modifier.padding(12.dp)) {
+        Text("Settings", style = MaterialTheme.typography.headlineLarge)
+        Box(Modifier.height(12.dp))
+        Button(onClick = {}) {
+            Text("Noter l'application")
+        }
+        Button(onClick = {}) {
+            Text("Suggestions / retour")
+        }
+        Button(onClick = {}) {
+            Text("A propos")
+        }
+        Box(Modifier.height(12.dp))
+        Button(onClick = {}) {
+            Text("Se déconnecter")
+        }
     }
 }
