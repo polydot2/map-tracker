@@ -1,6 +1,8 @@
 package com.poly.herewego.ui.profile
 
 import android.content.Intent
+import android.content.IntentSender.OnFinished
+import android.widget.ProgressBar
 import android.widget.Space
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.foundation.Image
@@ -24,9 +26,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.CheckCircle
@@ -35,12 +35,18 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.rounded.Face
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -52,37 +58,32 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import coil3.compose.AsyncImage
 import com.poly.herewego.R
-import com.poly.herewego.ui.place.PlaceScreen
-import com.poly.herewego.ui.theme.HerewegoTheme
-import kotlin.time.Duration.Companion.seconds
+import com.poly.herewego.utils.DrawableManager
 
 @Composable
 fun ProfileScreen(name: String, onOpenCategory: (category: String) -> Unit) {
 
     val data = listOf(
-        Pair("Nantes 50%", false),
-        Pair("Lyon", false),
-        Pair("Paris", false),
-        Pair("Rome", false),
+        Triple("Nantes", 0.5, false),
+        Triple("Lyon", 0.2, false),
+        Triple("Paris", 0.0, false),
+        Triple("Rome", 0.18, false),
 //        Pair("London", true),
 //        Pair("Lille", false),
     )
 
-    Column{
-        Text("Profile", style = MaterialTheme.typography.headlineLarge)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(12.dp)
+    ) {
+        Text("Profile", style = MaterialTheme.typography.headlineLarge, modifier = Modifier.padding(bottom = 12.dp))
         Box(Modifier.height(12.dp))
         Row(
             Modifier
                 .fillMaxWidth(),
             verticalAlignment = Alignment.Bottom
         ) {
-//            Image(
-//                painter = painterResource(R.drawable.ic_launcher_background),
-//                contentDescription = "avatar",
-//                modifier = Modifier
-//                    .size(64.dp)
-//                    .clip(CircleShape)
-//            )
             AsyncImage(
                 modifier = Modifier
                     .size(64.dp)
@@ -93,40 +94,51 @@ fun ProfileScreen(name: String, onOpenCategory: (category: String) -> Unit) {
             Box(Modifier.width(12.dp))
             Column {
                 Text("Luke Bigwalker", style = MaterialTheme.typography.headlineMedium)
-                Text("Mini marcheur \uD83D\uDD7A")
+                Text("Mini explorer \uD83D\uDD7A")
             }
         }
-        Box(Modifier.height(12.dp))
-//        Divider(thickness = 1.dp, color = MaterialTheme.colorScheme.secondary)
-        Box(Modifier.height(12.dp))
+        Box(Modifier.height(24.dp))
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = 128.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(count = data.count()) { Badge(data[it].first, data[it].second, listener = { onOpenCategory(data[it].first) }) }
+            items(count = data.count()) { Badge(data[it].first, data[it].second, data[it].third, listener = { onOpenCategory(data[it].first) }) }
         }
     }
 }
 
 @Composable
-fun Badge(name: String, check: Boolean, listener: () -> Unit) {
+fun Badge(name: String, percent: Double, check: Boolean, listener: () -> Unit) {
     Card(
+        shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .size(100.dp)
             .clickable(onClick = listener)
+            .padding(top = 12.dp)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            Icon(Icons.Filled.Home, contentDescription = name + "icon")
-            Text(name, maxLines = 2, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center)
-//            Icon(if (check) Icons.Filled.CheckCircle else Icons.Outlined.Info, contentDescription = "Check mark")
-            Text("\uD83E\uDE99")
+        Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+            Image(
+                painter = painterResource(DrawableManager.getCategoryIcon(name)),
+                contentDescription = "avatar",
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(CircleShape)
+            )
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(name, maxLines = 2, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center)
+                Box(Modifier.size(48.dp), Alignment.Center) {
+                    CircularProgressIndicator(
+                        progress = { percent.toFloat() },
+                    )
+                    Text((percent * 100).toString() + "%", maxLines = 2, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center)
+                }
+                //            Icon(if (check) Icons.Filled.CheckCircle else Icons.Outlined.Info, contentDescription = "Check mark")
+            }
         }
     }
 }

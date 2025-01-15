@@ -1,33 +1,62 @@
 package com.poly.herewego.ui.settings
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
+import androidx.compose.material.icons.outlined.KeyboardArrowRight
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.poly.herewego.ui.category.CategoryScreen
 
 @Composable
-fun SettingsScreen(name: String, navigateToFriendProfile: (friendUserId: String) -> Unit) {
-    Column{
+fun SettingsScreen() {
+    Column(
+        Modifier
+            .padding(12.dp)
+    ) {
         Text("Settings", style = MaterialTheme.typography.headlineLarge)
         Box(Modifier.height(12.dp))
-        Button(onClick = {}) {
-            Text("Noter l'application")
-        }
-        Button(onClick = {}) {
-            Text("Suggestions / retour")
-        }
-        Button(onClick = {}) {
-            Text("A propos")
-        }
+        SettingsButton("About", {})
         Box(Modifier.height(12.dp))
-        Button(onClick = {}) {
-            Text("Se déconnecter")
+        SettingsButton("Logout", {})
+    }
+}
+
+@Composable
+fun SettingsButton(name: String, onClick: (place: String) -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp)
+            .clickable(onClick = { onClick(name) })
+    ) {
+        Row(modifier = Modifier.fillMaxWidth().padding(12.dp), horizontalArrangement = Arrangement.SpaceBetween, Alignment.CenterVertically) {
+            Text(name)
+            Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight, contentDescription = "icon")
         }
     }
+}
+
+@Preview
+@Composable
+fun SimpleComposablePreview() {
+    SettingsScreen()
 }

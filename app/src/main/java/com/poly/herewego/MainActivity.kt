@@ -1,28 +1,24 @@
 package com.poly.herewego
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Button
 import androidx.compose.material.Icon
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Face
+import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Place
-import androidx.compose.material.icons.sharp.Settings
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Scaffold
@@ -35,7 +31,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -45,6 +44,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.poly.herewego.ui.CategoryRoute
+import com.poly.herewego.ui.DiscoverRoute
+import com.poly.herewego.ui.LoginRoute
+import com.poly.herewego.ui.MapRoute
+import com.poly.herewego.ui.NavHostRouter
+import com.poly.herewego.ui.PlacesRoute
+import com.poly.herewego.ui.ProfileRoute
+import com.poly.herewego.ui.SettingsRoute
 import com.poly.herewego.ui.category.CategoryScreen
 import com.poly.herewego.ui.discover.DiscoverScreen
 import com.poly.herewego.ui.login.LoginScreen
@@ -54,27 +61,6 @@ import com.poly.herewego.ui.profile.ProfileScreen
 import com.poly.herewego.ui.settings.SettingsScreen
 import com.poly.herewego.ui.theme.HerewegoTheme
 import kotlinx.serialization.Serializable
-
-@Serializable
-data class LoginRoute(val id: String)
-
-@Serializable
-data class MapRoute(val id: String)
-
-@Serializable
-data class DiscoverRoute(val id: String)
-
-@Serializable
-data class SettingsRoute(val id: String)
-
-@Serializable
-data class ProfileRoute(val id: String)
-
-@Serializable
-data class PlacesRoute(val id: String)
-
-@Serializable
-data class CategoryRoute(val id: String)
 
 data class TopLevelRoute<T : Any>(val name: String, val route: T, val icon: ImageVector)
 
@@ -95,9 +81,9 @@ class MainActivity : ComponentActivity() {
 
                 val topLevelRoutes = listOf(
                     TopLevelRoute("Map", MapRoute(id = "A"), Icons.Rounded.Place),
-                    TopLevelRoute("Discover", DiscoverRoute(id = "A"), Icons.Rounded.Favorite),
-                    TopLevelRoute("Profile", ProfileRoute(id = "A"), Icons.Rounded.Face),
-                    TopLevelRoute("Settings", SettingsRoute(id = "A"), Icons.Sharp.Settings)
+                    TopLevelRoute("Explore", DiscoverRoute(id = "A"), Icons.Rounded.Favorite),
+                    TopLevelRoute("Profile", ProfileRoute(id = "A"), Icons.Rounded.AccountCircle),
+                    TopLevelRoute("Settings", SettingsRoute(id = "A"), Icons.Rounded.Settings)
                 )
 
                 LaunchedEffect(key1 = navController) {
@@ -115,7 +101,7 @@ class MainActivity : ComponentActivity() {
                 }
 
                 Scaffold(
-                    modifier = Modifier.navigationBarsPadding(),
+                    Modifier.navigationBarsPadding(),
                     bottomBar = {
                         AnimatedVisibility(visible = shouldShowBottomBar, enter = fadeIn(), exit = fadeOut()) {
                             NavigationBar {
@@ -123,9 +109,15 @@ class MainActivity : ComponentActivity() {
                                 val currentDestination = navBackStackEntry?.destination
 
                                 topLevelRoutes.forEach { topLevelRoute ->
-                                    this.BottomNavigationItem(
+                                    BottomNavigationItem(
                                         icon = { Icon(topLevelRoute.icon, contentDescription = topLevelRoute.name) },
-//                                        label = { Text(topLevelRoute.name) },
+                                        label = {
+                                            Text(
+                                                text = topLevelRoute.name, softWrap = false,
+                                                overflow = TextOverflow.Ellipsis,
+                                                modifier = Modifier.padding(horizontal = 2.dp)
+                                            )
+                                        },
                                         selected = currentDestination?.hierarchy?.any { it.hasRoute(topLevelRoute.route::class) } == true,
                                         onClick = {
                                             navController.navigate(topLevelRoute.route) {
@@ -148,32 +140,9 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) { innerPadding ->
-                    NavHost(navController, startDestination = LoginRoute(id = "ok"), Modifier.padding(innerPadding).padding(12.dp)) {
-                        composable<LoginRoute> {
-                            LoginScreen("a") { navController.navigate(MapRoute(id = "ok")) }
-                        }
-                        composable<MapRoute> {
-                            MapScreen()
-                        }
-                        composable<DiscoverRoute> {
-                            DiscoverScreen()
-                        }
-                        composable<SettingsRoute> { backStackEntry ->
-                            val profile = backStackEntry.toRoute<SettingsRoute>()
-                            SettingsScreen(name = profile.id) { friendUserId ->
-                                navController.navigate(route = SettingsRoute(id = friendUserId))
-                            }
-                        }
-                        composable<ProfileRoute> {
-                            ProfileScreen("profile") { category -> navController.navigate(CategoryRoute(category)) }
-                        }
-                        composable<PlacesRoute> {
-                            PlaceScreen("id")
-                        }
-                        composable<CategoryRoute> {
-                            CategoryScreen("{{params}}") { place -> navController.navigate(PlacesRoute(place)) }
-                        }
-                    }
+                    val navBackStackEntry by navController.currentBackStackEntryAsState()
+                    val currentDestination = navBackStackEntry?.destination
+                    NavHostRouter(navController, if (currentDestination?.hasRoute(CategoryRoute::class) == true) PaddingValues(top = 0.dp) else innerPadding)
                 }
             }
         }
