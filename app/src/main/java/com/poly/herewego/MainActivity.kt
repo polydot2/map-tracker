@@ -14,6 +14,7 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Face
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Place
 import androidx.compose.material.icons.sharp.Settings
@@ -33,19 +34,32 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.poly.herewego.ui.category.CategoryScreen
 import com.poly.herewego.ui.discover.DiscoverScreen
 import com.poly.herewego.ui.map.MapScreen
+import com.poly.herewego.ui.place.PlaceScreen
+import com.poly.herewego.ui.profile.ProfileScreen
+import com.poly.herewego.ui.settings.SettingsScreen
 import com.poly.herewego.ui.theme.HerewegoTheme
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Map(val id: String)
+data class MapRoute(val id: String)
 
 @Serializable
-data class Places(val id: String)
+data class PlacesRoute(val id: String)
 
 @Serializable
-data class Settings(val id: String)
+data class SettingsRoute(val id: String)
+
+@Serializable
+data class ProfileRoute(val id: String)
+
+@Serializable
+data class DetailRoute(val id: String)
+
+@Serializable
+data class CategoryRoute(val id: String)
 
 data class TopLevelRoute<T : Any>(val name: String, val route: T, val icon: ImageVector)
 
@@ -57,10 +71,10 @@ class MainActivity : ComponentActivity() {
             HerewegoTheme {
                 val navController = rememberNavController()
                 val topLevelRoutes = listOf(
-                    TopLevelRoute("Map", Map(id = "A"), Icons.Rounded.Place),
-                    TopLevelRoute("Discover", Places(id = "A"), Icons.Rounded.Favorite),
-//                    TopLevelRoute("Profile", Settings(id = "A"), Icons.Rounded.AccountCircle),
-                    TopLevelRoute("Settings", Settings(id = "A"), Icons.Sharp.Settings)
+                    TopLevelRoute("Map", MapRoute(id = "A"), Icons.Rounded.Place),
+                    TopLevelRoute("Discover", PlacesRoute(id = "A"), Icons.Rounded.Favorite),
+                    TopLevelRoute("Profile", ProfileRoute(id = "A"), Icons.Rounded.Face),
+                    TopLevelRoute("Settings", SettingsRoute(id = "A"), Icons.Sharp.Settings)
                 )
                 Scaffold(
                     modifier = Modifier.navigationBarsPadding(),
@@ -93,54 +107,31 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) { innerPadding ->
-                    NavHost(navController, startDestination = Map(id = "ok"), Modifier.padding(innerPadding)) {
-                        composable<Map> {
+                    NavHost(navController, startDestination = MapRoute(id = "ok"), Modifier.padding(innerPadding)) {
+                        composable<MapRoute> {
                             MapScreen()
                         }
-                        composable<Places> {
+                        composable<PlacesRoute> {
                             DiscoverScreen()
                         }
-                        composable<Settings> { backStackEntry ->
-                            val profile = backStackEntry.toRoute<Settings>()
+                        composable<SettingsRoute> { backStackEntry ->
+                            val profile = backStackEntry.toRoute<SettingsRoute>()
                             SettingsScreen(name = profile.id) { friendUserId ->
-                                navController.navigate(route = Settings(id = friendUserId))
+                                navController.navigate(route = SettingsRoute(id = friendUserId))
                             }
+                        }
+                        composable<ProfileRoute> {
+                            ProfileScreen("profile")
+                        }
+                        composable<DetailRoute> {
+                            PlaceScreen("id")
+                        }
+                        composable<CategoryRoute> {
+                            CategoryScreen("id")
                         }
                     }
                 }
             }
-        }
-    }
-}
-
-//@Composable
-//fun MapScreen(
-//    name: String,
-//    navigateToFriendProfile: (friendUserId: String) -> Unit
-//) {
-//    Column(modifier = Modifier.padding(12.dp)) {
-//        Text(name)
-//        Button(onClick = {}) { Text("return to another thing ?") }
-//    }
-//}
-
-@Composable
-fun SettingsScreen(name: String, navigateToFriendProfile: (friendUserId: String) -> Unit) {
-    Column(modifier = Modifier.padding(12.dp)) {
-        Text("Settings", style = MaterialTheme.typography.headlineLarge)
-        Box(Modifier.height(12.dp))
-        Button(onClick = {}) {
-            Text("Noter l'application")
-        }
-        Button(onClick = {}) {
-            Text("Suggestions / retour")
-        }
-        Button(onClick = {}) {
-            Text("A propos")
-        }
-        Box(Modifier.height(12.dp))
-        Button(onClick = {}) {
-            Text("Se déconnecter")
         }
     }
 }

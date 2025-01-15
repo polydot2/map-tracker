@@ -22,21 +22,19 @@ fun DiscoverScreen() {
     val viewModel: DiscoverViewModel = viewModel()
     val cities = viewModel.placeState.value
 
-
     Column(modifier = Modifier.padding(12.dp)) {
         androidx.compose.material3.Text("Discovery", style = androidx.compose.material3.MaterialTheme.typography.headlineLarge)
         Box(Modifier.height(12.dp))
-
-        if (cities.isEmpty())
-//        Button(onClick = { viewModel.fetch() }) { }
-            CircularProgressIndicator(
-                modifier = Modifier.width(64.dp),
-            )
-        else
-            LazyColumn(contentPadding = PaddingValues(16.dp)) {
-                items(items = cities, itemContent = { PlaceItem(it) })
-            }
     }
+    if (cities.isEmpty())
+//        Button(onClick = { viewModel.fetch() }) { }
+        CircularProgressIndicator(
+            modifier = Modifier.width(64.dp),
+        )
+    else
+        LazyColumn(contentPadding = PaddingValues(16.dp)) {
+            items(items = cities, itemContent = { PlaceItem(it) })
+        }
 }
 
 @Composable
