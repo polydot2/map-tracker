@@ -1,6 +1,5 @@
 package com.poly.herewego.utils
 
-import androidx.compose.ui.text.toLowerCase
 import com.poly.herewego.R
 import java.util.Locale
 
