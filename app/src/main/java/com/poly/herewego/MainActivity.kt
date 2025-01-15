@@ -69,7 +69,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            HerewegoTheme {
+            MaterialTheme {
                 val navController = rememberNavController()
                 var shouldShowBottomBar by rememberSaveable {
                     mutableStateOf(false)
