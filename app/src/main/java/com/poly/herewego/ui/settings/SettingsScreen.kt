@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun SettingsScreen(name: String, navigateToFriendProfile: (friendUserId: String) -> Unit) {
-    Column(modifier = Modifier.padding(12.dp)) {
+    Column{
         Text("Settings", style = MaterialTheme.typography.headlineLarge)
         Box(Modifier.height(12.dp))
         Button(onClick = {}) {

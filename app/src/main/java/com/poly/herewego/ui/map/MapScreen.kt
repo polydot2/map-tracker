@@ -25,7 +25,7 @@ fun MapScreen() {
     val viewModel: DiscoverViewModel = viewModel()
     val cities = viewModel.placeState.value
 
-    Column(modifier = Modifier.padding(12.dp)) {
+    Column {
         androidx.compose.material3.Text("Map", style = androidx.compose.material3.MaterialTheme.typography.headlineLarge)
         Box(Modifier.height(12.dp))
     }

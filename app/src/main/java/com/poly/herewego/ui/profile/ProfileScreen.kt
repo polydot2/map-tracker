@@ -25,6 +25,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -48,27 +49,26 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import coil3.compose.AsyncImage
 import com.poly.herewego.R
 import com.poly.herewego.ui.place.PlaceScreen
+import com.poly.herewego.ui.theme.HerewegoTheme
 import kotlin.time.Duration.Companion.seconds
 
 @Composable
-fun ProfileScreen(name: String) {
+fun ProfileScreen(name: String, onOpenCategory: (category: String) -> Unit) {
 
     val data = listOf(
         Pair("Nantes 50%", false),
-//        Pair("Lyon", false),
-//        Pair("Paris", false),
-//        Pair("Rome", false),
+        Pair("Lyon", false),
+        Pair("Paris", false),
+        Pair("Rome", false),
 //        Pair("London", true),
 //        Pair("Lille", false),
     )
 
-    Column(
-        modifier = Modifier
-            .padding(12.dp)
-    ) {
+    Column{
         Text("Profile", style = MaterialTheme.typography.headlineLarge)
         Box(Modifier.height(12.dp))
         Row(
@@ -97,23 +97,16 @@ fun ProfileScreen(name: String) {
             }
         }
         Box(Modifier.height(12.dp))
+//        Divider(thickness = 1.dp, color = MaterialTheme.colorScheme.secondary)
         Box(Modifier.height(12.dp))
         LazyVerticalGrid(
-            contentPadding = PaddingValues(12.dp),
             columns = GridCells.Adaptive(minSize = 128.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(count = data.count()) { Badge(data[it].first, data[it].second, listener = { startDetailActivity(data[it].first) }) }
+            items(count = data.count()) { Badge(data[it].first, data[it].second, listener = { onOpenCategory(data[it].first) }) }
         }
     }
-}
-
-fun startDetailActivity(category: String) {
-//    val context = LocalContext.current
-//    val intent = Intent(context, PlaceScreen::class.java)
-//    context.startActivity(intent)
-
 }
 
 @Composable
@@ -141,5 +134,5 @@ fun Badge(name: String, check: Boolean, listener: () -> Unit) {
 @Preview
 @Composable
 fun SimpleComposablePreview() {
-    ProfileScreen("name")
+    ProfileScreen("name", {})
 }

@@ -23,29 +23,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CategoryScreen(category: String) {
+fun CategoryScreen(category: String, onOpenDetails: (place: String) -> Unit) {
 
     var list = listOf(Pair("Tour de lu", false), Pair("Chateau des ducs", true), Pair("Elephant \uD83D\uDC18", false), Pair("Jardin des plantes", true))
 
     Column {
-        Text("Category", style = MaterialTheme.typography.headlineLarge, modifier = Modifier.padding(bottom = 12.dp))
+        Text("Category $category", style = MaterialTheme.typography.headlineLarge, modifier = Modifier.padding(bottom = 12.dp))
         Text("Liste des categories pour $category")
         Box(Modifier.height(12.dp))
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            items(items = list, itemContent = { item(it.first, it.second) })
+            items(items = list, itemContent = { PlaceItem(it.first, it.second, onOpenDetails) })
         }
     }
 }
 
 @Composable
-fun item(name: String, checked: Boolean) {
+fun PlaceItem(name: String, checked: Boolean, onClick: (place: String) -> Unit) {
     Card(
         modifier = Modifier
             .height(64.dp)
             .fillMaxWidth()
-            .clickable(onClick = { })
+            .clickable(onClick = { onClick(name) })
     ) {
         Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.SpaceBetween, Alignment.CenterVertically) {
             Text(name, modifier = Modifier.padding(12.dp))
@@ -57,5 +57,5 @@ fun item(name: String, checked: Boolean) {
 @Preview
 @Composable
 fun SimpleComposablePreview() {
-    CategoryScreen("Nantes")
+    CategoryScreen("Nantes", {})
 }
