@@ -7,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigationItem
@@ -36,15 +35,16 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.poly.herewego.ui.CategoryRoute
-import com.poly.herewego.ui.DiscoverRoute
-import com.poly.herewego.ui.MapRoute
-import com.poly.herewego.ui.NavHostRouter
-import com.poly.herewego.ui.ProfileRoute
-import com.poly.herewego.ui.SettingsRoute
+import com.poly.herewego.presentation.DiscoverRoute
+import com.poly.herewego.presentation.MapRoute
+import com.poly.herewego.presentation.NavHostRouter
+import com.poly.herewego.presentation.ProfileRoute
+import com.poly.herewego.presentation.SettingsRoute
+import dagger.hilt.android.AndroidEntryPoint
 
 data class TopLevelRoute<T : Any>(val name: String, val route: T, val icon: ImageVector)
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

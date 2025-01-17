@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     kotlin("plugin.serialization")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
@@ -67,17 +69,20 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
 
-//    // Google Maps Compose library
-//    implementation(libs.maps.compose)
-//    implementation(libs.maps.compose.utils)
-//    implementation(libs.maps.compose.widgets)
+    // Hilt
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
+    implementation(kotlin("reflect"))
 
-    val mapsComposeVersion = "4.4.1"
-    implementation("com.google.maps.android:maps-compose:$mapsComposeVersion")
-    // Google Maps Compose utility library
-    implementation("com.google.maps.android:maps-compose-utils:$mapsComposeVersion")
-    // Google Maps Compose widgets library
-    implementation("com.google.maps.android:maps-compose-widgets:$mapsComposeVersion")
+    // map
+    implementation(libs.maps.compose)
+    implementation(libs.maps.compose.utils.v441)
+    implementation(libs.maps.compose.widgets)
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }
 
 secrets {

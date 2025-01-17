@@ -5,6 +5,7 @@ import android.util.Xml
 import com.google.android.gms.maps.model.LatLng
 import com.poly.herewego.R
 import com.poly.herewego.data.Map.utils.meters
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,8 +16,7 @@ import java.io.IOException
 import java.io.InputStream
 
 
-//class MountainsRepository(@ApplicationContext val context: Context) {
-class MountainsRepository(val context: Context) {
+class MountainsRepository(@ApplicationContext val context: Context) {
     private val _mountains = MutableStateFlow(emptyList<Mountain>())
     val mountains: StateFlow<List<Mountain>> = _mountains
     private var loaded = false
@@ -28,7 +28,7 @@ class MountainsRepository(val context: Context) {
         if (!loaded) {
             loaded = true
             _mountains.value = withContext(Dispatchers.IO) {
-                context.resources.openRawResource(  R.raw.top_peaks).use { inputStream ->
+                context.resources.openRawResource(R.raw.top_peaks).use { inputStream ->
                     readMountains(inputStream)
                 }
             }
