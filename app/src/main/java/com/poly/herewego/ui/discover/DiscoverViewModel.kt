@@ -4,8 +4,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.poly.herewego.data.DiscoverRepository
-import com.poly.herewego.data.model.PlaceResponse
+import com.poly.herewego.data.discovery.DiscoverRepository
+import com.poly.herewego.data.discovery.model.PlaceResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

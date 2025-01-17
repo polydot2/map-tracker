@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.poly.herewego.data.model.PlaceResponse
+import com.poly.herewego.data.discovery.model.PlaceResponse
 
 @Composable
 fun DiscoverScreen() {

@@ -1,6 +1,6 @@
-package com.poly.herewego.data.api
+package com.poly.herewego.data.discovery.api
 
-import com.poly.herewego.data.model.PlaceResponse
+import com.poly.herewego.data.discovery.model.PlaceResponse
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET

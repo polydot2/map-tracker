@@ -1,4 +1,4 @@
-package com.poly.herewego.data.model
+package com.poly.herewego.data.discovery.model
 
 import com.google.gson.annotations.SerializedName
 
