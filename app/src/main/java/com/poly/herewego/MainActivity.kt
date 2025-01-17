@@ -123,7 +123,9 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentDestination = navBackStackEntry?.destination
-                    NavHostRouter(navController, if (currentDestination?.hasRoute(CategoryRoute::class) == true) PaddingValues(top = 0.dp) else innerPadding)
+                    // top padding change to fullscreen on certain screen
+//                    NavHostRouter(navController, if (currentDestination?.hasRoute(CategoryRoute::class) == true) PaddingValues(top = 0.dp) else innerPadding)
+                    NavHostRouter(navController, innerPadding)
                 }
             }
         }

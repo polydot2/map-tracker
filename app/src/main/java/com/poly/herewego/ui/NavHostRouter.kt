@@ -70,7 +70,7 @@ fun NavHostRouter(navController: NavHostController, innerPadding: PaddingValues)
             SettingsScreen()
         }
         composable<ProfileRoute> {
-            ProfileScreen("profile") { category -> navController.navigate(CategoryRoute(category)) }
+            ProfileScreen("profile", { category -> navController.navigate(CategoryRoute(category)) }, { navController.navigate(DiscoverRoute("numb")) })
         }
         composable<PlacesRoute> {
             PlaceScreen("id")

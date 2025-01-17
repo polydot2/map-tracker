@@ -15,11 +15,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -32,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.poly.herewego.utils.DrawableManager
+import kotlinx.coroutines.launch
 
 @Composable
 fun CategoryScreen(category: String, onOpenDetails: (place: String) -> Unit) {
@@ -52,7 +58,8 @@ fun CategoryScreen(category: String, onOpenDetails: (place: String) -> Unit) {
             Row(
                 Modifier
                     .align(Alignment.BottomStart)
-                    .padding(12.dp)) {
+                    .padding(12.dp)
+            ) {
                 Image(
                     painter = painterResource(DrawableManager.getCategoryIcon("nantes")),
                     contentDescription = "nantes icon",
@@ -65,7 +72,7 @@ fun CategoryScreen(category: String, onOpenDetails: (place: String) -> Unit) {
         }
 
         Column(Modifier.padding(12.dp)) {
-            Text("Liste des points d'interêts", style = MaterialTheme.typography.headlineSmall)
+            Text("Liste des points d'interêts")
             Box(Modifier.height(12.dp))
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -73,6 +80,8 @@ fun CategoryScreen(category: String, onOpenDetails: (place: String) -> Unit) {
                 items(items = list, itemContent = { PlaceItem(it.first, it.second, onOpenDetails) })
             }
         }
+
+//        SimpleBottomSheetScaffoldSample()
     }
 }
 
@@ -90,6 +99,48 @@ fun PlaceItem(name: String, checked: Boolean, onClick: (place: String) -> Unit) 
         }
     }
 }
+
+fun onOpenSheet() {
+
+}
+//
+//@Preview
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//fun SimpleBottomSheetScaffoldSample() {
+//    val scope = rememberCoroutineScope()
+//    val scaffoldState = rememberBottomSheetScaffoldState()
+//
+//    BottomSheetScaffold(
+//        scaffoldState = scaffoldState,
+//        sheetContent = {
+//            Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+//                Box(
+//                    Modifier
+//                        .fillMaxWidth()
+//                        .height(128.dp), contentAlignment = Alignment.Center) {
+//                    Text("Swipe up to expand sheet")
+//                }
+//                Text("Sheet content")
+//                Button(
+//                    modifier = Modifier.padding(bottom = 64.dp),
+//                    onClick = { scope.launch { scaffoldState.bottomSheetState.partialExpand() } }
+//                ) {
+//                    Text("Click to collapse sheet")
+//                }
+//            }
+//        }
+//    ) { innerPadding ->
+//        Box(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .padding(innerPadding),
+//            contentAlignment = Alignment.Center
+//        ) {
+//            Text("Scaffold Content")
+//        }
+//    }
+//}
 
 @Preview
 @Composable

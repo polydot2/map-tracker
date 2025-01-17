@@ -42,7 +42,6 @@ fun PlaceScreen(id: String) {
 
         Box(Modifier.height(12.dp))
 
-//        Card(colors = CardColors(contentColor = Purple80, disabledContentColor = Purple80, containerColor = Purple80, disabledContainerColor = Purple80)) {
         Card() {
             Column(
                 Modifier
