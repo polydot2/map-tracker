@@ -1,4 +1,4 @@
-package com.poly.herewego.data.Map.utils
+package com.poly.herewego.data.mountains.utils
 
 enum class Direction(val sign: Int) {
     NORTH(1),

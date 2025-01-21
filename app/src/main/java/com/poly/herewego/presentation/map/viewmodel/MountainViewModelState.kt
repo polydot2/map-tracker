@@ -1,7 +1,7 @@
 package com.poly.herewego.presentation.map.viewmodel
 
 import com.google.android.gms.maps.model.LatLngBounds
-import com.poly.herewego.data.Map.Mountain
+import com.poly.herewego.data.mountains.model.Mountain
 
 /**
  * Sealed class representing the state of the mountain map view.

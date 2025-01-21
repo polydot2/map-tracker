@@ -1,4 +1,4 @@
-package com.poly.herewego.data.Map.utils
+package com.poly.herewego.data.mountains.utils
 
 import android.content.res.Resources
 import androidx.annotation.StringRes

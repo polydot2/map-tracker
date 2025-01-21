@@ -2,8 +2,8 @@ package com.poly.herewego.presentation.map.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.poly.herewego.data.Map.MountainsRepository
-import com.poly.herewego.data.Map.is14er
+import com.poly.herewego.data.mountains.MountainsRepository
+import com.poly.herewego.data.mountains.model.is14er
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow

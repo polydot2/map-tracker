@@ -1,10 +1,11 @@
-package com.poly.herewego.data.Map
+package com.poly.herewego.data.mountains
 
 import android.content.Context
 import android.util.Xml
 import com.google.android.gms.maps.model.LatLng
 import com.poly.herewego.R
-import com.poly.herewego.data.Map.utils.meters
+import com.poly.herewego.data.mountains.model.Mountain
+import com.poly.herewego.data.mountains.utils.meters
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

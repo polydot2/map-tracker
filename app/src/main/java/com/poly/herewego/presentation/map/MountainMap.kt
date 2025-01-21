@@ -43,9 +43,9 @@ import com.google.maps.android.compose.Polygon
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.widgets.ScaleBar
 import com.poly.herewego.R
-import com.poly.herewego.data.Map.utils.DMS
-import com.poly.herewego.data.Map.utils.Direction
-import com.poly.herewego.data.Map.utils.toDecimalDegrees
+import com.poly.herewego.data.mountains.utils.DMS
+import com.poly.herewego.data.mountains.utils.Direction
+import com.poly.herewego.data.mountains.utils.toDecimalDegrees
 import com.poly.herewego.presentation.map.markers.AdvancedMarkersMapContent
 import com.poly.herewego.presentation.map.markers.BasicMarkersMapContent
 import com.poly.herewego.presentation.map.markers.ClusteringMarkersMapContent

@@ -2,7 +2,7 @@ package com.poly.herewego.di
 
 
 import android.app.Application
-import com.poly.herewego.data.Map.MountainsRepository
+import com.poly.herewego.data.mountains.MountainsRepository
 import com.poly.herewego.data.discovery.DiscoverRepository
 import com.poly.herewego.data.discovery.api.DiscoveryWebService
 import dagger.Module

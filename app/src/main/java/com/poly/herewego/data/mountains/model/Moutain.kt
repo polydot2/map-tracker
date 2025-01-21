@@ -1,8 +1,8 @@
-package com.poly.herewego.data.Map
+package com.poly.herewego.data.mountains.model
 
 import com.google.android.gms.maps.model.LatLng
-import com.poly.herewego.data.Map.utils.Meters
-import com.poly.herewego.data.Map.utils.feet
+import com.poly.herewego.data.mountains.utils.Meters
+import com.poly.herewego.data.mountains.utils.feet
 
 /**
  * Data class holding information about a mountain.

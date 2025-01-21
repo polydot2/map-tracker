@@ -11,9 +11,9 @@ import com.google.maps.android.compose.AdvancedMarker
 import com.google.maps.android.compose.GoogleMapComposable
 import com.google.maps.android.compose.rememberMarkerState
 import com.poly.herewego.R
-import com.poly.herewego.data.Map.Mountain
-import com.poly.herewego.data.Map.is14er
-import com.poly.herewego.data.Map.utils.toElevationString
+import com.poly.herewego.data.mountains.model.Mountain
+import com.poly.herewego.data.mountains.model.is14er
+import com.poly.herewego.data.mountains.utils.toElevationString
 import com.poly.herewego.ui.utils.BitmapParameters
 import com.poly.herewego.ui.utils.vectorToBitmap
 

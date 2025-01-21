@@ -22,10 +22,9 @@ import com.google.maps.android.compose.GoogleMapComposable
 import com.google.maps.android.compose.MapsComposeExperimentalApi
 import com.google.maps.android.compose.clustering.Clustering
 import com.poly.herewego.R
-import com.poly.herewego.data.Map.Mountain
-import com.poly.herewego.data.Map.is14er
-import com.poly.herewego.data.Map.utils.LocalUnitsConverter
-import com.poly.herewego.data.Map.utils.toElevationString
+import com.poly.herewego.data.mountains.model.Mountain
+import com.poly.herewego.data.mountains.model.is14er
+import com.poly.herewego.data.mountains.utils.LocalUnitsConverter
 
 data class IconColor(val iconColor: Color, val backgroundColor: Color, val borderColor: Color)
 
