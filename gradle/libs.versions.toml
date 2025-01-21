@@ -1,9 +1,13 @@
 [versions]
-agp = "8.7.3"
+activityComposeVersion = "1.10.0"
+activityKtx = "1.10.0"
+agp = "8.8.0"
 coilCompose = "3.0.4"
 coilNetworkOkhttp = "3.0.4"
+fragmentKtx = "1.10.0"
 gson = "2.10.1"
 converterGson = "2.9.0"
+hiltNavigationCompose = "1.2.0"
 hiltVersion = "2.51.1"
 kotlin = "2.0.0"
 coreKtx = "1.10.1"
@@ -15,11 +19,13 @@ kotlinxSerializationJsonVersion = "1.6.0"
 lifecycleRuntimeKtx = "2.6.1"
 activityCompose = "1.8.0"
 composeBom = "2024.04.01"
+lifecycleviewmodel = "2.2.0"
 mapsCompose = "4.4.1"
 mapsComposeUtils = "4.4.1"
 mapsComposeVersion = "2.9.0"
 material = "1.7.6"
 navigationCompose = "2.8.4"
+navigationUiKtx = "2.8.5"
 playServicesLocation = "21.3.0"
 playServicesMaps = "18.1.0"
 retrofit = "2.9.0"
@@ -27,9 +33,15 @@ secretsGradlePlugin = "2.0.1"
 transportationConsumer = "3.0.0"
 
 [libraries]
+androidx-activity-compose-v1100 = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
+androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+androidx-lifecycleviewmodel = { module = "androidx.lifecycle:lifecycleviewmodel", version.ref = "lifecycleviewmodel" }
 androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationUiKtx" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilNetworkOkhttp" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }

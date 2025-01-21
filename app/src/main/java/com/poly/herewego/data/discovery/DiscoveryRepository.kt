@@ -6,9 +6,9 @@ import com.poly.herewego.data.discovery.model.PlaceResponse
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class DiscoverRepository(
+class DiscoverRepository @Inject constructor(
     @ApplicationContext val context: Context,
-    @Inject val webService: DiscoveryWebService
+    val webService: DiscoveryWebService
 ) {
     suspend fun getCities(): List<PlaceResponse> {
         return webService.getCities()

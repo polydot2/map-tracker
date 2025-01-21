@@ -3,19 +3,21 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     kotlin("plugin.serialization")
+    // hilt
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    // google map
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
     namespace = "com.poly.herewego"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.poly.herewego"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -29,19 +31,23 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_18
+        targetCompatibility = JavaVersion.VERSION_18
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "18"
     }
     buildFeatures {
         compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.3.2"
     }
 }
 
 dependencies {
     implementation(libs.androidx.material)
+    implementation(libs.androidx.material3)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.core.ktx)
@@ -51,7 +57,6 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -70,17 +75,22 @@ dependencies {
     implementation(libs.coil.network.okhttp)
 
     // Hilt
-    kapt(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    kapt(libs.hilt.android.compiler)
     implementation(kotlin("reflect"))
 
     // map
     implementation(libs.maps.compose)
     implementation(libs.maps.compose.utils.v441)
     implementation(libs.maps.compose.widgets)
+
+    // mapbox
+    implementation("com.mapbox.maps:android:11.9.1")
+    implementation("com.mapbox.extension:maps-compose:11.9.1")
 }
 
-// Allow references to generated code
+// Allow references to generated code // Hilt
 kapt {
     correctErrorTypes = true
 }

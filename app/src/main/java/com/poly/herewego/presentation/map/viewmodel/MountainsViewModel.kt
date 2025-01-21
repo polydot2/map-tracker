@@ -19,9 +19,7 @@ import javax.inject.Inject
  * ViewModel for loading and managing the list of mountains
  */
 @HiltViewModel
-class MountainsViewModel
-@Inject
-constructor(
+class MountainsViewModel @Inject constructor(
     mountainsRepository: MountainsRepository
 ) : ViewModel() {
 

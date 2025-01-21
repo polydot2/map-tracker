@@ -17,12 +17,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.poly.herewego.data.discovery.model.PlaceResponse
 
 @Composable
 fun DiscoverScreen() {
-    val viewModel: DiscoverViewModel = viewModel()
+    val viewModel: DiscoverViewModel = hiltViewModel()
     val cities = viewModel.placeState.value
 
     Column(modifier = Modifier.padding(12.dp)) {
