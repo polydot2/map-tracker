@@ -88,6 +88,8 @@ dependencies {
     // mapbox
     implementation("com.mapbox.maps:android:11.9.1")
     implementation("com.mapbox.extension:maps-compose:11.9.1")
+
+    implementation(libs.lottie.compose)
 }
 
 // Allow references to generated code // Hilt

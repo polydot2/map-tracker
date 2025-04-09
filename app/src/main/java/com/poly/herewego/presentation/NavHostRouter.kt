@@ -40,11 +40,6 @@ data class CategoryRoute(val id: String)
 
 @Composable
 fun NavHostRouter(navController: NavHostController, innerPadding: PaddingValues) {
-//    val colorStops = arrayOf(
-//        0.8f to Color.Transparent,
-//        1.0f to Color.Yellow,
-//    )
-
     NavHost(
         navController, startDestination = LoginRoute(id = "ok"), modifier = Modifier
             .fillMaxSize()
@@ -58,7 +53,7 @@ fun NavHostRouter(navController: NavHostController, innerPadding: PaddingValues)
 //            .padding(12.dp)
     ) {
         composable<LoginRoute> {
-            LoginScreen("a") { navController.navigate(MapRoute(id = "ok")) }
+            LoginScreen("a") { navController.navigate(ProfileRoute(id = "ok")) }
         }
         composable<MapRoute> {
             MapScreen()
@@ -73,10 +68,14 @@ fun NavHostRouter(navController: NavHostController, innerPadding: PaddingValues)
             ProfileScreen("profile", { category -> navController.navigate(CategoryRoute(category)) }, { navController.navigate(DiscoverRoute("numb")) })
         }
         composable<PlacesRoute> {
-            PlaceScreen("id")
+            PlaceScreen("id", false, { navController.popBackStack() })
         }
         composable<CategoryRoute> {
-            CategoryScreen("{{params}}") { place -> navController.navigate(PlacesRoute(place)) }
+            CategoryScreen("{{params}}", { place ->
+                navController.navigate(
+                    PlacesRoute(place)
+                )
+            }, { navController.popBackStack() })
         }
     }
 }

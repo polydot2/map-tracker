@@ -1,74 +1,46 @@
 package com.poly.herewego.presentation.discover
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.maps.model.LatLngBounds
-import com.poly.herewego.data.discovery.DiscoverRepository
 import com.poly.herewego.data.discovery.model.PlaceEntity
-import com.poly.herewego.data.discovery.model.PlaceResponse
-import com.poly.herewego.data.mountains.model.Mountain
-import com.poly.herewego.data.mountains.model.is14er
-import com.poly.herewego.presentation.map.viewmodel.MountainsScreenEvent
-import com.poly.herewego.presentation.map.viewmodel.MountainsScreenViewState
+import com.poly.herewego.domain.discovery.DiscoveryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
-import toLatLngBounds
 import javax.inject.Inject
 
 @HiltViewModel
-class DiscoverViewModel @Inject constructor(private val repository: DiscoverRepository) : ViewModel() {
-    // Whether or not to show all of the high peaks
-    private var showAllPlaces = MutableStateFlow(true)
+class DiscoveryViewModel @Inject constructor(val discoveryUsecase: DiscoveryUseCase) : ViewModel() {
+    private val ERROR_FETCHING_DATA: String = "Error"
 
-    val placesScreenViewState =
-        repository.places.combine(showAllPlaces) { allPlaces, showAllPlaces ->
-            if (allPlaces.isEmpty()) {
-                MountainsScreenViewState.Loading
-            } else {
-                val filteredMountains = if (showAllPlaces) allPlaces else allPlaces.take(4)
-                val boundingBox = filteredMountains.map { it.location }.toLatLngBounds()
-                ScreenViewState.PlacesList(
-                    mountains = filteredMountains,
-                    boundingBox = boundingBox,
-                    showingAllPeaks = showAllPlaces,
-                )
-            }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = MountainsScreenViewState.Loading
-        )
+    private val _uiState = MutableStateFlow<DiscoveryUiState>(DiscoveryUiState.Loading)
+    val uiState: StateFlow<DiscoveryUiState> = _uiState
 
     init {
+        fetchData()
+    }
+
+    private fun fetchData() {
         viewModelScope.launch {
-            repository.loadPlaces()
+            _uiState.value = DiscoveryUiState.Loading
+            val result = discoveryUsecase.execute()
+            _uiState.value = if (result.isSuccess) {
+                DiscoveryUiState.Success(result.getOrNull() ?: listOf())
+            } else {
+                DiscoveryUiState.Error(result.exceptionOrNull()?.message ?: ERROR_FETCHING_DATA)
+            }
         }
     }
 }
 
 
 /**
- * Sealed class representing the state of the mountain map view.
+ * Sealed class view state
  */
-sealed class ScreenViewState {
-    data object Loading : ScreenViewState()
-    data class PlacesList(
-        // List of the mountains to display
-        val mountains: List<PlaceEntity>,
-
-        // Bounding box that contains all of the mountains
-        val boundingBox: LatLngBounds,
-
-        // Switch indicating whether all the mountains or just the 14ers
-        val showingAllPeaks: Boolean = false,
-    ) : ScreenViewState()
+sealed class DiscoveryUiState {
+    object Loading : DiscoveryUiState()
+    data class Success(val data: List<PlaceEntity>) : DiscoveryUiState()
+    data class Error(val message: String) : DiscoveryUiState()
 }

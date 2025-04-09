@@ -14,11 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.poly.herewego.presentation.map.viewmodel.MountainsScreenViewState
 import com.poly.herewego.presentation.map.viewmodel.MountainsViewModel
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.mapbox.geojson.Point
-import com.mapbox.maps.extension.compose.MapboxMap
-import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
+import com.poly.herewego.ui.theme.AppTheme
 
 @Composable
 fun MapScreen() {
@@ -27,8 +24,7 @@ fun MapScreen() {
     val viewState = screenViewState.value
 
     Column(
-        Modifier
-            .padding(12.dp)
+        Modifier.padding(top = 24.dp, start = 12.dp, end = 12.dp, bottom = 12.dp)
     ) {
         Text("Map", style = androidx.compose.material3.MaterialTheme.typography.headlineLarge)
         Box(Modifier.height(12.dp))
@@ -61,5 +57,7 @@ fun MapScreen() {
 @Preview
 @Composable
 fun DefaultPreview() {
-    MapScreen()
+    AppTheme {
+        MapScreen()
+    }
 }

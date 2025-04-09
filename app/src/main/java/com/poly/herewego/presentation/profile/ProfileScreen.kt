@@ -1,8 +1,6 @@
 package com.poly.herewego.presentation.profile
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.shapes.Shape
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -11,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Icon
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,21 +16,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.IconButton
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.AddCircle
-import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -41,21 +30,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.painter.BrushPainter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.poly.herewego.presentation.category.PlaceItem
-import com.poly.herewego.presentation.category.onOpenSheet
-import com.poly.herewego.ui.theme.Purple80
+import com.poly.herewego.ui.theme.AppTheme
 import com.poly.herewego.ui.utils.DrawableManager
 import com.poly.herewego.ui.utils.dashedBorder
 
@@ -74,7 +57,7 @@ fun ProfileScreen(name: String, onOpenCategory: (category: String) -> Unit, onAd
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(12.dp)
+            .padding(top = 32.dp, start = 12.dp, end = 12.dp, bottom = 12.dp)
     ) {
         Text("Profile", style = MaterialTheme.typography.headlineLarge, modifier = Modifier.padding(bottom = 12.dp))
         Box(Modifier.height(12.dp))
@@ -139,7 +122,7 @@ fun Badge(name: String, percent: Double, check: Boolean, listener: () -> Unit) {
             Box(Modifier.width(12.dp))
             Column {
                 Text(name.uppercase(), maxLines = 2, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center, style = MaterialTheme.typography.bodyLarge)
-                LinearProgressIndicator(progress = { percent.toFloat() }, trackColor = Purple80, modifier = Modifier.height(8.dp), strokeCap = StrokeCap.Round)
+                LinearProgressIndicator(progress = { percent.toFloat() }, modifier = Modifier.height(8.dp), strokeCap = StrokeCap.Round)
             }
 //                Box(Modifier.align(Alignment.Bottom)) {
 //                    Text(String.format("%.0f", percent * 100) + "%", maxLines = 2, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center)
@@ -188,6 +171,8 @@ fun BadgeAdd(listener: () -> Unit) {
 @Preview
 @Composable
 fun DefaultPreview() {
-    ProfileScreen("name", {}, {})
+    AppTheme {
+        ProfileScreen("name", {}, {})
+    }
 }
 

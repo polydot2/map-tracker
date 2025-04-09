@@ -1,22 +1,21 @@
 package com.poly.herewego
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
-import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Place
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -31,8 +30,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.poly.herewego.presentation.DiscoverRoute
@@ -40,6 +37,7 @@ import com.poly.herewego.presentation.MapRoute
 import com.poly.herewego.presentation.NavHostRouter
 import com.poly.herewego.presentation.ProfileRoute
 import com.poly.herewego.presentation.SettingsRoute
+import com.poly.herewego.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 data class TopLevelRoute<T : Any>(val name: String, val route: T, val icon: ImageVector)
@@ -50,7 +48,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MaterialTheme {
+            AppTheme(
+                dynamicColor = true
+            ) {
                 val navController = rememberNavController()
                 var shouldShowBottomBar by rememberSaveable {
                     mutableStateOf(false)
@@ -62,9 +62,9 @@ class MainActivity : ComponentActivity() {
 
                 val topLevelRoutes = listOf(
                     TopLevelRoute("Map", MapRoute(id = "A"), Icons.Rounded.Place),
-                    TopLevelRoute("Explore", DiscoverRoute(id = "A"), Icons.Rounded.Favorite),
+//                    TopLevelRoute("Explore", DiscoverRoute(id = "A"), Icons.Rounded.Favorite),
                     TopLevelRoute("Profile", ProfileRoute(id = "A"), Icons.Rounded.AccountCircle),
-                    TopLevelRoute("Settings", SettingsRoute(id = "A"), Icons.Rounded.Settings)
+//                    TopLevelRoute("Settings", SettingsRoute(id = "A"), Icons.Rounded.Settings),
                 )
 
                 LaunchedEffect(key1 = navController) {
@@ -75,9 +75,10 @@ class MainActivity : ComponentActivity() {
                                     || destination.hasRoute(ProfileRoute::class)
                                     || destination.hasRoute(SettingsRoute::class)
 
-                        if (destination.hasRoute(MapRoute::class)) {
-                            selectedItemIndex = 0
-                        }
+                        // first selected
+//                        if (destination.hasRoute(ProfileRoute::class)) {
+//                            selectedItemIndex = 2
+//                        }
                     }
                 }
 
@@ -89,7 +90,7 @@ class MainActivity : ComponentActivity() {
                                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                                 val currentDestination = navBackStackEntry?.destination
 
-                                topLevelRoutes.forEach { topLevelRoute ->
+                                topLevelRoutes.forEachIndexed { index, topLevelRoute ->
                                     BottomNavigationItem(
                                         icon = { Icon(topLevelRoute.icon, contentDescription = topLevelRoute.name) },
                                         label = {
@@ -99,20 +100,25 @@ class MainActivity : ComponentActivity() {
                                                 modifier = Modifier.padding(horizontal = 2.dp)
                                             )
                                         },
-                                        selected = currentDestination?.hierarchy?.any { it.hasRoute(topLevelRoute.route::class) } == true,
+                                        selected = selectedItemIndex == index,
+//                                        selected = currentDestination?.hierarchy?.any { it.hasRoute(topLevelRoute.route::class) } == true,
                                         onClick = {
-                                            navController.navigate(topLevelRoute.route) {
-                                                // Pop up to the start destination of the graph to
-                                                // avoid building up a large stack of destinations
-                                                // on the back stack as users select items
-                                                popUpTo(navController.graph.findStartDestination().id) {
-                                                    saveState = true
+                                            if (selectedItemIndex != index) {
+                                                navController.navigate(topLevelRoute.route) {
+                                                    //                                                Log.d("TAGATAG", "on click on " + topLevelRoute.toString())
+                                                    //                                                // Pop up to the start destination of the graph to
+                                                    //                                                // avoid building up a large stack of destinations
+                                                    //                                                // on the back stack as users select items
+                                                    //                                                popUpTo(topLevelRoute.route) {
+                                                    //                                                    saveState = true
+                                                    //                                                }
+                                                    //                                                // Avoid multiple copies of the same destination when
+                                                    //                                                // reselecting the same item
+                                                    launchSingleTop = true
+                                                    // Restore state when reselecting a previously selected item
+                                                    restoreState = true
                                                 }
-                                                // Avoid multiple copies of the same destination when
-                                                // reselecting the same item
-                                                launchSingleTop = true
-                                                // Restore state when reselecting a previously selected item
-                                                restoreState = true
+                                                selectedItemIndex = index
                                             }
                                         }
                                     )
@@ -120,12 +126,11 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     }
-                ) { innerPadding ->
-                    val navBackStackEntry by navController.currentBackStackEntryAsState()
-                    val currentDestination = navBackStackEntry?.destination
+                ) {
+                    Log.d("TAGATAG", it.toString())
                     // top padding change to fullscreen on certain screen
 //                    NavHostRouter(navController, if (currentDestination?.hasRoute(CategoryRoute::class) == true) PaddingValues(top = 0.dp) else innerPadding)
-                    NavHostRouter(navController, innerPadding)
+                    NavHostRouter(navController, PaddingValues(top = 0.dp))
                 }
             }
         }

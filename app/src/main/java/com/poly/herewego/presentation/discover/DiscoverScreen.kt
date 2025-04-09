@@ -15,6 +15,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,24 +31,29 @@ import com.poly.herewego.presentation.map.viewmodel.MountainsViewModel
 
 @Composable
 fun DiscoverScreen() {
-    val viewModel: DiscoverViewModel = hiltViewModel()
-    val screenViewState = viewModel.placesScreenViewState.collectAsState()
-    val viewState = screenViewState.value
+    val viewModel: DiscoveryViewModel = hiltViewModel()
+    val uiState by viewModel.uiState.collectAsState()
 
     Column(modifier = Modifier.padding(12.dp)) {
         Text("Discovery", style = androidx.compose.material3.MaterialTheme.typography.headlineLarge, modifier = Modifier.padding(bottom = 12.dp))
 
-        when (viewState) {
-            is ScreenViewState.Loading -> {
+        when (uiState) {
+            is DiscoveryUiState.Loading -> {
                 CircularProgressIndicator(
                     modifier = Modifier.width(64.dp),
                 )
             }
 
-            is ScreenViewState.PlacesList -> {
+            is DiscoveryUiState.Success -> {
+                var data = (uiState as DiscoveryUiState.Success).data
                 LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    items(items = viewState.mountains, itemContent = { PlaceItem(it) })
+                    items(items = data, itemContent = { PlaceItem(it) })
                 }
+            }
+
+            is DiscoveryUiState.Error -> {
+                var data = (uiState as DiscoveryUiState.Error).message
+                Text(text = data)
             }
         }
     }
@@ -80,16 +86,12 @@ fun PlaceItem(meal: PlaceEntity) {
                 Text(
                     text = meal.country,
                 )
-                Text(
-                    text = meal.admin1,
-                )
             }
         }
     }
 }
 
 @Preview(showBackground = true)
-
 @Composable
 fun DefaultPreview() {
     DiscoverScreen()

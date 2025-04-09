@@ -3,8 +3,11 @@ package com.poly.herewego.di
 
 import android.app.Application
 import com.poly.herewego.data.mountains.MountainsRepository
-import com.poly.herewego.data.discovery.DiscoverRepository
-import com.poly.herewego.data.discovery.api.DiscoveryWebService
+import com.poly.herewego.data.discovery.DiscoverRepositoryImpl
+import com.poly.herewego.data.discovery.api.DiscoveryApi
+import com.poly.herewego.data.discovery.api.DiscoveryRepository
+import com.poly.herewego.domain.discovery.DiscoveryUseCase
+import com.poly.herewego.domain.discovery.DiscoveryUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,18 +27,23 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideDiscoveryRepository(app: Application, discoveryService: DiscoveryWebService): DiscoverRepository {
-        return DiscoverRepository(app, discoveryService)
+    fun provideDiscoveryUseCase(discoveryRepository: DiscoveryRepository): DiscoveryUseCase {
+        return DiscoveryUseCaseImpl(discoveryRepository)
     }
 
     @Provides
     @Singleton
-    fun provideDiscoveryWebService(app: Application): DiscoveryWebService {
+    fun provideDiscoveryRepository(discoveryService: DiscoveryApi): DiscoveryRepository {
+        return DiscoverRepositoryImpl(discoveryService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDiscoveryWebService(): DiscoveryApi {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://www.polydot.fr/cache/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
-        return DiscoveryWebService(retrofit.create(DiscoveryWebService.DiscoveryApi::class.java))
+        return retrofit.create(DiscoveryApi::class.java)
     }
 }

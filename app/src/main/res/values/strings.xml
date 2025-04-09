@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Herewego</string>
+    <string name="app_name">Check Map</string>
     <string name="in_feet">%1$,.0f feet</string>
     <string name="in_miles">%1$,.1f miles</string>
     <string name="in_meters">%1$,.0f meters</string>

@@ -19,54 +19,61 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.poly.herewego.ui.theme.AppTheme
+import com.poly.herewego.ui.theme.AppTypography
 
 @Composable
 fun LoginScreen(name: String, onLogin: () -> Unit) {
-    Column(
-        Modifier
-            .fillMaxSize()
-            .padding(12.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Column() {
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 48.dp)
-            ) {
-                Text("Login", style = MaterialTheme.typography.headlineLarge)
-            }
-            Box(Modifier.height(12.dp))
-            Card(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 48.dp)
-            ) {
-                Column(Modifier.padding(12.dp)) {
-                    TextField("", label = { Text("Email") }, onValueChange = { })
-                    TextField("", label = { Text("Password") }, onValueChange = { })
 
-                    Box(Modifier.height(12.dp))
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                        Button(onClick = onLogin) {
-                            Text("Login")
+    onLogin()
+
+    if (false) {
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(12.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Column() {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 48.dp)
+                ) {
+                    Text("Login", style = AppTypography.headlineLarge)
+                }
+                Box(Modifier.height(12.dp))
+                Card(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 48.dp)
+                ) {
+                    Column(Modifier.padding(12.dp)) {
+                        TextField("", label = { Text("Email") }, onValueChange = { })
+                        TextField("", label = { Text("Password") }, onValueChange = { })
+
+                        Box(Modifier.height(12.dp))
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                            Button(onClick = onLogin) {
+                                Text("Login")
+                            }
                         }
                     }
                 }
-            }
-            Box(Modifier.height(12.dp))
+                Box(Modifier.height(12.dp))
 
-            Card(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 48.dp)
-            ) {
-                Column(Modifier.padding(12.dp)) {
-                    Text("Tester l'appli sans compte ? \nC'est ici !", fontStyle = FontStyle.Italic)
-                    Box(Modifier.height(12.dp))
-                    Button(modifier = Modifier.fillMaxWidth(), onClick = onLogin) {
-                        Text("Preview mode")
+                Card(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 48.dp)
+                ) {
+                    Column(Modifier.padding(12.dp)) {
+                        Text("Tester l'appli sans compte ? \nC'est ici !", fontStyle = FontStyle.Italic)
+                        Box(Modifier.height(12.dp))
+                        Button(modifier = Modifier.fillMaxWidth(), onClick = onLogin) {
+                            Text("Preview mode")
+                        }
                     }
                 }
             }
@@ -77,5 +84,15 @@ fun LoginScreen(name: String, onLogin: () -> Unit) {
 @Preview
 @Composable
 fun DefaultPreview() {
-    LoginScreen("Tour LU", {})
+    AppTheme(darkTheme = false, dynamicColor = true) {
+        LoginScreen("login", {})
+    }
+}
+
+@Preview
+@Composable
+fun DefaultDarkPreview() {
+    AppTheme(darkTheme = true, dynamicColor = true) {
+        LoginScreen("login", {})
+    }
 }

@@ -23,8 +23,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SettingsScreen() {
     Column(
-        Modifier
-            .padding(12.dp)
+        Modifier.padding(top = 32.dp, start = 12.dp, end = 12.dp, bottom = 12.dp)
     ) {
         Text("Settings", style = MaterialTheme.typography.headlineLarge)
         Box(Modifier.height(12.dp))
@@ -42,7 +41,11 @@ fun SettingsButton(name: String, onClick: (place: String) -> Unit) {
             .height(48.dp)
             .clickable(onClick = { onClick(name) })
     ) {
-        Row(modifier = Modifier.fillMaxWidth().padding(12.dp), horizontalArrangement = Arrangement.SpaceBetween, Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp), horizontalArrangement = Arrangement.SpaceBetween, Alignment.CenterVertically
+        ) {
             Text(name)
             Icon(Icons.AutoMirrored.Outlined.KeyboardArrowRight, contentDescription = "icon")
         }
