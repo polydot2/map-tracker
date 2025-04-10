@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.Add
@@ -38,6 +39,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.poly.herewego.ui.component.AllStamp
+import com.poly.herewego.ui.component.MyProfile
 import com.poly.herewego.ui.theme.AppTheme
 import com.poly.herewego.ui.utils.DrawableManager
 import com.poly.herewego.ui.utils.dashedBorder
@@ -61,43 +64,10 @@ fun ProfileScreen(name: String, onOpenCategory: (category: String) -> Unit, onAd
     ) {
         Text("Profile", style = MaterialTheme.typography.headlineLarge, modifier = Modifier.padding(bottom = 12.dp))
         Box(Modifier.height(12.dp))
-        Row(
-            Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.Bottom
-        ) {
-            AsyncImage(
-                modifier = Modifier
-                    .size(64.dp)
-                    .clip(CircleShape),
-                model = "https://i.pravatar.cc/150?img=3",
-                contentDescription = "Translated description of what the image contains"
-            )
-            Box(Modifier.width(12.dp))
-            Column {
-                Text("Luke Bigwalker", style = MaterialTheme.typography.headlineMedium)
-                Text("Mini explorer \uD83D\uDD7A")
-            }
-        }
-//        Box(Modifier.height(24.dp))
-//        LazyVerticalGrid(
-//            columns = GridCells.Adaptive(minSize = 128.dp),
-//            verticalArrangement = Arrangement.spacedBy(12.dp),
-//            horizontalArrangement = Arrangement.spacedBy(12.dp)
-//        ) {
-//            items(count = data.count()) { Badge(data[it].first, data[it].second, data[it].third, listener = { onOpenCategory(data[it].first) }) }
-//        }
-        Box(Modifier.height(24.dp))
-        Column() {
-            Text("Mes voyages", style = MaterialTheme.typography.bodyLarge)
-            Box(Modifier.height(12.dp))
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                items(count = data.count()) { Badge(data[it].first, data[it].second, data[it].third, listener = { onOpenCategory(data[it].first) }) }
-            }
-            Box(Modifier.height(12.dp))
-            BadgeAdd(onAddTour)
+        MyProfile("", "Tout vos tampons :)", { })
+        AllStamp("")
+        Row (Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween){
+            Button({}) { Text("Partager") }
         }
     }
 }

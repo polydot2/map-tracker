@@ -84,48 +84,48 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(
                     Modifier.navigationBarsPadding(),
-                    bottomBar = {
-                        AnimatedVisibility(visible = shouldShowBottomBar, enter = fadeIn(), exit = fadeOut()) {
-                            NavigationBar {
-                                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                                val currentDestination = navBackStackEntry?.destination
-
-                                topLevelRoutes.forEachIndexed { index, topLevelRoute ->
-                                    BottomNavigationItem(
-                                        icon = { Icon(topLevelRoute.icon, contentDescription = topLevelRoute.name) },
-                                        label = {
-                                            Text(
-                                                text = topLevelRoute.name, softWrap = false,
-                                                overflow = TextOverflow.Ellipsis,
-                                                modifier = Modifier.padding(horizontal = 2.dp)
-                                            )
-                                        },
-                                        selected = selectedItemIndex == index,
-//                                        selected = currentDestination?.hierarchy?.any { it.hasRoute(topLevelRoute.route::class) } == true,
-                                        onClick = {
-                                            if (selectedItemIndex != index) {
-                                                navController.navigate(topLevelRoute.route) {
-                                                    //                                                Log.d("TAGATAG", "on click on " + topLevelRoute.toString())
-                                                    //                                                // Pop up to the start destination of the graph to
-                                                    //                                                // avoid building up a large stack of destinations
-                                                    //                                                // on the back stack as users select items
-                                                    //                                                popUpTo(topLevelRoute.route) {
-                                                    //                                                    saveState = true
-                                                    //                                                }
-                                                    //                                                // Avoid multiple copies of the same destination when
-                                                    //                                                // reselecting the same item
-                                                    launchSingleTop = true
-                                                    // Restore state when reselecting a previously selected item
-                                                    restoreState = true
-                                                }
-                                                selectedItemIndex = index
-                                            }
-                                        }
-                                    )
-                                }
-                            }
-                        }
-                    }
+//                    bottomBar = {
+//                        AnimatedVisibility(visible = shouldShowBottomBar, enter = fadeIn(), exit = fadeOut()) {
+//                            NavigationBar {
+//                                val navBackStackEntry by navController.currentBackStackEntryAsState()
+//                                val currentDestination = navBackStackEntry?.destination
+//
+//                                topLevelRoutes.forEachIndexed { index, topLevelRoute ->
+//                                    BottomNavigationItem(
+//                                        icon = { Icon(topLevelRoute.icon, contentDescription = topLevelRoute.name) },
+//                                        label = {
+//                                            Text(
+//                                                text = topLevelRoute.name, softWrap = false,
+//                                                overflow = TextOverflow.Ellipsis,
+//                                                modifier = Modifier.padding(horizontal = 2.dp)
+//                                            )
+//                                        },
+//                                        selected = selectedItemIndex == index,
+////                                        selected = currentDestination?.hierarchy?.any { it.hasRoute(topLevelRoute.route::class) } == true,
+//                                        onClick = {
+//                                            if (selectedItemIndex != index) {
+//                                                navController.navigate(topLevelRoute.route) {
+//                                                    //                                                Log.d("TAGATAG", "on click on " + topLevelRoute.toString())
+//                                                    //                                                // Pop up to the start destination of the graph to
+//                                                    //                                                // avoid building up a large stack of destinations
+//                                                    //                                                // on the back stack as users select items
+//                                                    //                                                popUpTo(topLevelRoute.route) {
+//                                                    //                                                    saveState = true
+//                                                    //                                                }
+//                                                    //                                                // Avoid multiple copies of the same destination when
+//                                                    //                                                // reselecting the same item
+//                                                    launchSingleTop = true
+//                                                    // Restore state when reselecting a previously selected item
+//                                                    restoreState = true
+//                                                }
+//                                                selectedItemIndex = index
+//                                            }
+//                                        }
+//                                    )
+//                                }
+//                            }
+//                        }
+//                    }
                 ) {
                     Log.d("TAGATAG", it.toString())
                     // top padding change to fullscreen on certain screen

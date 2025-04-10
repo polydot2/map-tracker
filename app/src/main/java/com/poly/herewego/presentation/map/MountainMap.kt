@@ -58,7 +58,6 @@ import kotlinx.coroutines.launch
 /**
  * Shows a [GoogleMap] with collection of markers
  */
-@OptIn(MapsComposeExperimentalApi::class)
 @Composable
 fun MountainMap(
     paddingValues: PaddingValues,

@@ -112,7 +112,6 @@ fun PlaceItem(name: String, checked: Boolean, onClick: (place: String) -> Unit) 
 }
 
 fun onOpenSheet() {
-
 }
 //
 //@Preview

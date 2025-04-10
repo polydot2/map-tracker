@@ -10,8 +10,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.poly.herewego.presentation.category.CategoryScreen
 import com.poly.herewego.presentation.discover.DiscoverScreen
+import com.poly.herewego.presentation.home.HomeScreen
 import com.poly.herewego.presentation.login.LoginScreen
 import com.poly.herewego.presentation.map.MapScreen
+import com.poly.herewego.presentation.passport.PassportScreen
 import com.poly.herewego.presentation.place.PlaceScreen
 import com.poly.herewego.presentation.profile.ProfileScreen
 import com.poly.herewego.presentation.settings.SettingsScreen
@@ -38,6 +40,13 @@ data class PlacesRoute(val id: String)
 @Serializable
 data class CategoryRoute(val id: String)
 
+@Serializable
+data class HomeRoute(val id: String)
+
+@Serializable
+data class PassportRoute(val id: String)
+
+
 @Composable
 fun NavHostRouter(navController: NavHostController, innerPadding: PaddingValues) {
     NavHost(
@@ -53,13 +62,19 @@ fun NavHostRouter(navController: NavHostController, innerPadding: PaddingValues)
 //            .padding(12.dp)
     ) {
         composable<LoginRoute> {
-            LoginScreen("a") { navController.navigate(ProfileRoute(id = "ok")) }
+            LoginScreen("a") { navController.navigate(HomeRoute(id = "ok")) }
         }
         composable<MapRoute> {
             MapScreen()
         }
         composable<DiscoverRoute> {
             DiscoverScreen()
+        }
+        composable<HomeRoute> {
+            HomeScreen({ navController.navigate(ProfileRoute("dumb")) }, { category: String -> navController.navigate(PassportRoute(category)) })
+        }
+        composable<PassportRoute> {
+            PassportScreen()
         }
         composable<SettingsRoute> {
             SettingsScreen()
