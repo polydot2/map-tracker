@@ -13,7 +13,7 @@ import com.poly.herewego.presentation.discover.DiscoverScreen
 import com.poly.herewego.presentation.home.HomeScreen
 import com.poly.herewego.presentation.login.LoginScreen
 import com.poly.herewego.presentation.map.MapScreen
-import com.poly.herewego.presentation.passport.PassportScreen
+import com.poly.herewego.presentation.passport.CityDetailScreen
 import com.poly.herewego.presentation.place.PlaceScreen
 import com.poly.herewego.presentation.profile.ProfileScreen
 import com.poly.herewego.presentation.settings.SettingsScreen
@@ -71,10 +71,15 @@ fun NavHostRouter(navController: NavHostController, innerPadding: PaddingValues)
             DiscoverScreen()
         }
         composable<HomeRoute> {
-            HomeScreen({ navController.navigate(ProfileRoute("dumb")) }, { category: String -> navController.navigate(PassportRoute(category)) })
+            HomeScreen({ navController.navigate(ProfileRoute("dumb")) }, { category: String -> navController.navigate(PassportRoute(category)) }, { navController.navigate(SettingsRoute("dumb")) })
         }
         composable<PassportRoute> {
-            PassportScreen()
+//            PassportScreen({ place ->
+//                navController.navigate(
+//                    PlacesRoute(place)
+//                )
+//            })
+            CityDetailScreen {}
         }
         composable<SettingsRoute> {
             SettingsScreen()

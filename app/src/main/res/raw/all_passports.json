@@ -1,0 +1,62 @@
+[
+  {
+    "id": "67fb982912b9a228df3b6d48",
+    "creationDate": "2025-04-13",
+    "name": "Nantes",
+    "color": "0xFF00BCD4",
+    "icon": "🐘",
+    "lat": 0,
+    "lng": 0,
+    "places": [
+      {
+        "id": "67fb982912b9a228df3b6d47",
+        "creationDate": "2025-04-13",
+        "name": "Elephant",
+        "description": "This is the elephant in the room",
+        "imageUrl": "a",
+        "lat": 0,
+        "lng": 0
+      }
+    ]
+  },
+  {
+    "id": "67fb982912b9a228df3b6d49",
+    "creationDate": "2025-04-13",
+    "name": "Paris",
+    "color": "0xFF3F78B5",
+    "icon": "🗼",
+    "lat": 0,
+    "lng": 0,
+    "places": []
+  },
+  {
+    "id": "67fb982912b9a228df3b6d4a",
+    "creationDate": "2025-04-13",
+    "name": "Lille",
+    "color": "0xFF009688",
+    "icon": "🐵",
+    "lat": 0,
+    "lng": 0,
+    "places": []
+  },
+  {
+    "id": "67fb982912b9a228df3b6d4b",
+    "creationDate": "2025-04-13",
+    "name": "Lyon",
+    "color": "0xFFFF9800",
+    "icon": "🍲",
+    "lat": 0,
+    "lng": 0,
+    "places": []
+  },
+  {
+    "id": "67fb982912b9a228df3b6d4c",
+    "creationDate": "2025-04-13",
+    "name": "Besançon",
+    "color": "0xFF198112",
+    "icon": "🏰",
+    "lat": 0,
+    "lng": 0,
+    "places": []
+  }
+]

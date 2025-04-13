@@ -44,5 +44,4 @@ fun MyProfile(title: String, subtitle: String, onProfileClick: () -> Unit) {
             }
         }
     }
-    Box(Modifier.height(24.dp))
 }

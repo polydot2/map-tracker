@@ -13,12 +13,17 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.Place
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -52,87 +57,36 @@ class MainActivity : ComponentActivity() {
                 dynamicColor = true
             ) {
                 val navController = rememberNavController()
-                var shouldShowBottomBar by rememberSaveable {
-                    mutableStateOf(false)
-                }
-
-                var selectedItemIndex by rememberSaveable {
-                    mutableIntStateOf(0)
-                }
-
-                val topLevelRoutes = listOf(
-                    TopLevelRoute("Map", MapRoute(id = "A"), Icons.Rounded.Place),
-//                    TopLevelRoute("Explore", DiscoverRoute(id = "A"), Icons.Rounded.Favorite),
-                    TopLevelRoute("Profile", ProfileRoute(id = "A"), Icons.Rounded.AccountCircle),
-//                    TopLevelRoute("Settings", SettingsRoute(id = "A"), Icons.Rounded.Settings),
-                )
-
-                LaunchedEffect(key1 = navController) {
-                    navController.addOnDestinationChangedListener { _, destination, _ ->
-                        shouldShowBottomBar =
-                            destination.hasRoute(MapRoute::class)
-                                    || destination.hasRoute(DiscoverRoute::class)
-                                    || destination.hasRoute(ProfileRoute::class)
-                                    || destination.hasRoute(SettingsRoute::class)
-
-                        // first selected
-//                        if (destination.hasRoute(ProfileRoute::class)) {
-//                            selectedItemIndex = 2
-//                        }
-                    }
-                }
-
                 Scaffold(
                     Modifier.navigationBarsPadding(),
-//                    bottomBar = {
-//                        AnimatedVisibility(visible = shouldShowBottomBar, enter = fadeIn(), exit = fadeOut()) {
-//                            NavigationBar {
-//                                val navBackStackEntry by navController.currentBackStackEntryAsState()
-//                                val currentDestination = navBackStackEntry?.destination
-//
-//                                topLevelRoutes.forEachIndexed { index, topLevelRoute ->
-//                                    BottomNavigationItem(
-//                                        icon = { Icon(topLevelRoute.icon, contentDescription = topLevelRoute.name) },
-//                                        label = {
-//                                            Text(
-//                                                text = topLevelRoute.name, softWrap = false,
-//                                                overflow = TextOverflow.Ellipsis,
-//                                                modifier = Modifier.padding(horizontal = 2.dp)
-//                                            )
-//                                        },
-//                                        selected = selectedItemIndex == index,
-////                                        selected = currentDestination?.hierarchy?.any { it.hasRoute(topLevelRoute.route::class) } == true,
-//                                        onClick = {
-//                                            if (selectedItemIndex != index) {
-//                                                navController.navigate(topLevelRoute.route) {
-//                                                    //                                                Log.d("TAGATAG", "on click on " + topLevelRoute.toString())
-//                                                    //                                                // Pop up to the start destination of the graph to
-//                                                    //                                                // avoid building up a large stack of destinations
-//                                                    //                                                // on the back stack as users select items
-//                                                    //                                                popUpTo(topLevelRoute.route) {
-//                                                    //                                                    saveState = true
-//                                                    //                                                }
-//                                                    //                                                // Avoid multiple copies of the same destination when
-//                                                    //                                                // reselecting the same item
-//                                                    launchSingleTop = true
-//                                                    // Restore state when reselecting a previously selected item
-//                                                    restoreState = true
-//                                                }
-//                                                selectedItemIndex = index
-//                                            }
-//                                        }
-//                                    )
-//                                }
-//                            }
-//                        }
-//                    }
+//                    topBar = { topbar() }
                 ) {
-                    Log.d("TAGATAG", it.toString())
-                    // top padding change to fullscreen on certain screen
-//                    NavHostRouter(navController, if (currentDestination?.hasRoute(CategoryRoute::class) == true) PaddingValues(top = 0.dp) else innerPadding)
-                    NavHostRouter(navController, PaddingValues(top = 0.dp))
+                    NavHostRouter(navController, it)
                 }
             }
         }
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun topbar() {
+    return CenterAlignedTopAppBar(
+        title = {
+            Text(
+                "Navigation example",
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = { })
+            {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Localized description"
+                )
+            }
+        },
+    )
+}
+
+

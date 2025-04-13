@@ -41,13 +41,13 @@ fun AnimatedBook() {
 
     Box(
         modifier = Modifier
-            .size(200.dp) // Taille du livre
+            .size(110.dp) // Taille du livre
             .clickable { isOpen = !isOpen } // Clique pour déclencher l'animation
     ) {
         // Card de la tranche (en dessous, immobile)
         Card(
             modifier = Modifier
-                .size(180.dp)
+                .size(110.dp)
                 .offset(x = 10.dp), // Décalage pour donner l'impression de tranche
             colors = CardDefaults.cardColors(
                 containerColor = Color.Red
@@ -60,7 +60,7 @@ fun AnimatedBook() {
         // Card de la couverture (au-dessus, animée)
         Card(
             modifier = Modifier
-                .size(180.dp)
+                .size(110.dp)
                 .graphicsLayer {
                     // Déplacer l'élément pour que le bord droit soit à l'origine
                     translationX = -size.width / 2f // Déplace vers la gauche de width/2
