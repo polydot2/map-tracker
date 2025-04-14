@@ -28,22 +28,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.poly.herewego.presentation.passport.PassportScreen
+import com.poly.herewego.data.Passport
 import com.poly.herewego.ui.theme.AppTheme
 import com.poly.herewego.ui.theme.AppTypography
 
+fun hexStringToLong(hex: String): Long {
+    return hex.replace("0x", "", ignoreCase = true).toLong(16)
+}
+
 @Composable
 fun PassportWidget(
-    data: String,
-    color: Long,
+    data: Passport?,
+    title: String,
+    colorString: String,
     iconText: String,
-    onCategoryClick: (data: String) -> Unit,
+    onCategoryClick: (data: Passport) -> Unit,
     animation: Boolean = false
 ) {
     // État pour contrôler l'angle de rotation
@@ -55,6 +59,8 @@ fun PassportWidget(
         animationSpec = tween(durationMillis = 1000)
     )
 
+    val color = hexStringToLong(colorString)
+
     // Définir colorTitle en fonction de rotationAngle dans la composition
     val colorTitle = if (rotationAngle > 90f) Color(color) else Color.Black
 
@@ -64,7 +70,7 @@ fun PassportWidget(
             .height(146.dp)
     ) {
         Card(
-            onClick = {  },
+            onClick = { },
             Modifier
                 .width(110.dp)
                 .height(146.dp),
@@ -73,7 +79,9 @@ fun PassportWidget(
             ),
         ) {
             Column(
-                Modifier.padding(6.dp).fillMaxHeight(),
+                Modifier
+                    .padding(6.dp)
+                    .fillMaxHeight(),
                 Arrangement.SpaceBetween
             ) {
                 Text("Voir la map")
@@ -81,7 +89,7 @@ fun PassportWidget(
         }
 
         Card(
-            onClick = { if (!animation) onCategoryClick(data) else isOpen = !isOpen },
+            onClick = { data?.let { if (!animation) onCategoryClick(it) else isOpen = !isOpen } },
             Modifier
                 .width(104.dp)
                 .height(146.dp)
@@ -137,7 +145,7 @@ fun PassportWidget(
                     )
                 }
                 Text(
-                    data,
+                    title,
                     fontWeight = FontWeight.Bold,
                     color = colorTitle
                 )
@@ -155,7 +163,7 @@ fun PassportWidget(
 @Composable
 fun PassportPreview() {
     AppTheme {
-        PassportWidget("Nantes", 0xFF00BCD4, "\uD83D\uDC18", {}, true)
+        PassportWidget(null, "Nantes", "0xFF00BCD4", "\uD83D\uDC18", {}, true)
     }
 }
 

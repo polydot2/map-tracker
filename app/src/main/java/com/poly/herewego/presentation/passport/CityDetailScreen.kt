@@ -1,20 +1,19 @@
 package com.poly.herewego.presentation.passport
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,12 +21,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.poly.herewego.ui.theme.AppTheme
-
-import androidx.compose.foundation.lazy.items
+import com.poly.herewego.data.Passport
 import com.poly.herewego.ui.component.PassportWidget
 
 @Composable
-fun CityDetailScreen(onPoiClick: (place: String) -> Unit) {
+fun CityDetailScreen(passport: Passport, onPoiClick: (place: String) -> Unit) {
     // État pour gérer la hauteur de l'image
     val maxImageHeight = 300.dp // Hauteur maximale de l'image
     val density = LocalDensity.current
@@ -97,7 +95,7 @@ fun CityDetailScreen(onPoiClick: (place: String) -> Unit) {
                             Text("5 / 14 sites visités")
                         }
 
-                        PassportWidget("Nantes", 0xFF00BCD4, "\uD83D\uDC18", {}, true)
+                        PassportWidget(passport, passport.name, passport.color, passport.icon, {}, true)
                     }
 
                     Box(Modifier.height(12.dp))
@@ -160,7 +158,38 @@ fun CityDetailScreen(onPoiClick: (place: String) -> Unit) {
 @Composable
 fun PreviewScroll() {
     AppTheme {
-        CityDetailScreen {}
+        CityDetailScreen(Passport("id", "2020", "Nantes", "0xFF00BCD4", "\uD83D\uDC18", lat = 0f, lng = 0f, listOf()), {})
     }
 }
 
+@Composable
+fun HistoryWidget() {
+    Column {
+        Text(
+            text = "Historique",
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        Text("Check elephant le 12/04/2025")
+        Text("Check elephant le 15/05/2025")
+    }
+}
+
+@Composable
+fun PlaceItem(name: String, checked: Boolean, onClick: (place: String) -> Unit) {
+    Box(Modifier.background(color = Color.White)) {
+        Card(
+            modifier = Modifier
+                .height(64.dp)
+                .padding(start = 12.dp, end = 12.dp)
+                .fillMaxWidth()
+                .clickable(onClick = { onClick(name) })
+        ) {
+            Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.SpaceBetween, Alignment.CenterVertically) {
+                Text(name, modifier = Modifier.padding(12.dp))
+                Checkbox(checked = checked, enabled = false, onCheckedChange = {})
+            }
+        }
+    }
+}

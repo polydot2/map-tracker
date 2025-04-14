@@ -8,6 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
+import com.poly.herewego.data.Passport
 import com.poly.herewego.presentation.category.CategoryScreen
 import com.poly.herewego.presentation.discover.DiscoverScreen
 import com.poly.herewego.presentation.home.HomeScreen
@@ -18,6 +20,7 @@ import com.poly.herewego.presentation.place.PlaceScreen
 import com.poly.herewego.presentation.profile.ProfileScreen
 import com.poly.herewego.presentation.settings.SettingsScreen
 import kotlinx.serialization.Serializable
+import kotlin.reflect.typeOf
 
 @Serializable
 data class LoginRoute(val id: String)
@@ -44,8 +47,7 @@ data class CategoryRoute(val id: String)
 data class HomeRoute(val id: String)
 
 @Serializable
-data class PassportRoute(val id: String)
-
+data class PassportRoute(val passport: Passport)
 
 @Composable
 fun NavHostRouter(navController: NavHostController, innerPadding: PaddingValues) {
@@ -71,15 +73,14 @@ fun NavHostRouter(navController: NavHostController, innerPadding: PaddingValues)
             DiscoverScreen()
         }
         composable<HomeRoute> {
-            HomeScreen({ navController.navigate(ProfileRoute("dumb")) }, { category: String -> navController.navigate(PassportRoute(category)) }, { navController.navigate(SettingsRoute("dumb")) })
+            HomeScreen({ navController.navigate(ProfileRoute("dumb")) }, { passport: Passport -> navController.navigate(PassportRoute(passport)) }, { navController.navigate(SettingsRoute("dumb")) })
         }
-        composable<PassportRoute> {
-//            PassportScreen({ place ->
-//                navController.navigate(
-//                    PlacesRoute(place)
-//                )
-//            })
-            CityDetailScreen {}
+        composable<PassportRoute>(
+            typeMap = mapOf(
+                typeOf<Passport>() to PassportParameterType,
+            )
+        ) {
+            CityDetailScreen(it.toRoute<PassportRoute>().passport, {})
         }
         composable<SettingsRoute> {
             SettingsScreen()

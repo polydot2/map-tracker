@@ -25,14 +25,17 @@ import com.poly.herewego.presentation.widgets.Title
 @Composable
 fun SettingsScreen() {
     Column(
-        Modifier.padding(top = 32.dp, start = 12.dp, end = 12.dp, bottom = 12.dp)
+        Modifier.padding(top = 24.dp, start = 12.dp, end = 12.dp, bottom = 12.dp)
     ) {
         Title("Settings")
         SettingsButton("About", {})
         Box(Modifier.height(12.dp))
-        SettingsButton("Logout", {})
+        SettingsButton("Suggestion / retours", {})
         Button(onClick = {}, Modifier.padding(top = 12.dp)) {
             Text("Ajouter un lieu")
+        }
+        Button(onClick = {}, Modifier.padding(top = 12.dp)) {
+            Text("Créer un passport")
         }
         Button(onClick = {}, Modifier.padding(top = 12.dp)) {
             Text("Voir tout les lieux disponibles")
