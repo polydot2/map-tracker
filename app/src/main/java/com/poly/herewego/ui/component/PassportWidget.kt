@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,10 +37,8 @@ import androidx.compose.ui.unit.dp
 import com.poly.herewego.data.Passport
 import com.poly.herewego.ui.theme.AppTheme
 import com.poly.herewego.ui.theme.AppTypography
-
-fun hexStringToLong(hex: String): Long {
-    return hex.replace("0x", "", ignoreCase = true).toLong(16)
-}
+import com.poly.herewego.ui.utils.hexStringToColor
+import kotlin.random.Random
 
 @Composable
 fun PassportWidget(
@@ -47,7 +46,7 @@ fun PassportWidget(
     title: String,
     colorString: String,
     iconText: String,
-    onCategoryClick: (data: Passport) -> Unit,
+    onCategoryClick: (data: String) -> Unit,
     animation: Boolean = false
 ) {
     // État pour contrôler l'angle de rotation
@@ -59,10 +58,10 @@ fun PassportWidget(
         animationSpec = tween(durationMillis = 1000)
     )
 
-    val color = hexStringToLong(colorString)
+    val color = colorString.hexStringToColor()
 
     // Définir colorTitle en fonction de rotationAngle dans la composition
-    val colorTitle = if (rotationAngle > 90f) Color(color) else Color.Black
+    val colorTitle = if (rotationAngle > 90f) color else Color.Black
 
     Box(
         Modifier
@@ -89,38 +88,38 @@ fun PassportWidget(
         }
 
         Card(
-            onClick = { data?.let { if (!animation) onCategoryClick(it) else isOpen = !isOpen } },
+            onClick = { data?.let { if (!animation) onCategoryClick(it.id) else isOpen = !isOpen } },
             Modifier
                 .width(104.dp)
                 .height(146.dp)
                 .graphicsLayer {
                     clip = false
-                    // Déplacer l'élément pour que le bord droit soit à l'origine
                     translationX = -size.width / 2f
-                    // Appliquer la rotation autour de l'axe Y
                     rotationY = -rotationAngle
-                    // Ajuster la perspective
                     cameraDistance = 8f * density
-                    // Corriger l'effet miroir pour le contenu
                     if (rotationAngle < -90f) {
                         rotationY -= 180f
                     }
-                    // Repositionner après la rotation pour maintenir l'alignement
                     translationX += size.width / 2f * kotlin.math.cos(
                         Math.toRadians(rotationAngle.toDouble())
                     ).toFloat()
                 },
             colors = CardDefaults.cardColors(
-                containerColor = Color(color)
+                containerColor = colorString.hexStringToColor()
             ),
         ) {
-            Box(Modifier.padding(top = 4.dp, start = 4.dp)) {
+            Row(
+                Modifier
+                    .padding(top = 4.dp, start = 4.dp, end = 8.dp)
+                    .fillMaxWidth(), Arrangement.SpaceBetween
+            ) {
                 Icon(
                     Icons.Rounded.Place,
-                    modifier = Modifier.align(Alignment.Center),
                     tint = Color.Black.copy(alpha = 0.2f),
                     contentDescription = "icon passport"
                 )
+//                if(Random.Default.nextBoolean())
+//                    Text("100%", fontWeight = FontWeight.Bold)
             }
             Column(
                 Modifier
@@ -144,14 +143,20 @@ fun PassportWidget(
                         style = AppTypography.headlineLarge
                     )
                 }
+//                Box(
+//                    modifier = Modifier.fillMaxHeight(),
+//                    contentAlignment = Alignment.Center
+//                ) {
                 Text(
                     title,
+//                    modifier = Modifier.fillMaxHeight(),
                     fontWeight = FontWeight.Bold,
                     color = colorTitle
                 )
+//                }
                 Icon(
                     Icons.Rounded.Menu,
-                    contentDescription = "icon star",
+                    contentDescription = "icon detail",
                     tint = colorTitle
                 )
             }

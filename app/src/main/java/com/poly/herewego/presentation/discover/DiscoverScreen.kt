@@ -2,7 +2,6 @@ package com.poly.herewego.presentation.discover
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,13 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.poly.herewego.data.discovery.model.PlaceEntity
-import com.poly.herewego.data.discovery.model.PlaceResponse
-import com.poly.herewego.presentation.map.MarkerType
-import com.poly.herewego.presentation.map.MountainMap
-import com.poly.herewego.presentation.map.viewmodel.MountainsScreenViewState
-import com.poly.herewego.presentation.map.viewmodel.MountainsViewModel
+import com.poly.herewego.data.discovery.model.PlaceDto
 
 @Composable
 fun DiscoverScreen() {
@@ -60,7 +53,7 @@ fun DiscoverScreen() {
 }
 
 @Composable
-fun PlaceItem(meal: PlaceEntity) {
+fun PlaceItem(meal: PlaceDto) {
     Card(
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier

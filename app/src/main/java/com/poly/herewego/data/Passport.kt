@@ -1,7 +1,6 @@
 package com.poly.herewego.data
 
 import kotlinx.serialization.Serializable
-import java.time.LocalDate
 
 @Serializable
 data class Passport(
@@ -12,6 +11,7 @@ data class Passport(
     val icon: String,
     val lat: Float,
     val lng: Float,
+    val imageUrl: String,
     var places: List<Place>,
 )
 

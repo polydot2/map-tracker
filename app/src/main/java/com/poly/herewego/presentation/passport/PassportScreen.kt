@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -14,59 +15,71 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
-import com.poly.herewego.ui.theme.AppTheme
+import androidx.core.graphics.toColorInt
+import androidx.hilt.navigation.compose.hiltViewModel
+import coil3.compose.AsyncImage
 import com.poly.herewego.data.Passport
+import com.poly.herewego.presentation.widgets.Medal
+import com.poly.herewego.ui.theme.AppTheme
 import com.poly.herewego.ui.component.PassportWidget
+import com.poly.herewego.ui.component.PlaceItem
+import com.poly.herewego.ui.utils.hexStringToColor
+import kotlin.random.Random
 
 @Composable
-fun CityDetailScreen(passport: Passport, onPoiClick: (place: String) -> Unit) {
-    // État pour gérer la hauteur de l'image
-    val maxImageHeight = 300.dp // Hauteur maximale de l'image
-    val density = LocalDensity.current
-    val maxImageHeightPx = with(density) { maxImageHeight.toPx() }
+fun PassportScreen(
+    passportId: String,
+    onPoiClick: (place: String) -> Unit,
+    viewModel: PassportViewModel = hiltViewModel()
+) {
+    val passportState by viewModel.uiState.collectAsState()
 
-    // État pour suivre le décalage de l'image
-    var imageHeightOffsetPx by remember { mutableStateOf(0f) }
+    LaunchedEffect(passportId) {
+        viewModel.fetchData(passportId)
+    }
 
-    var list = listOf(Pair("Le Lieu unique", false), Pair("Chateau des ducs", true), Pair("Elephant \uD83D\uDC18", false), Pair("Jardin des plantes", true))
+    when (val state = passportState) {
+        is PassportUiState.Loading -> CircularProgressIndicator()
+        is PassportUiState.Success -> RenderSuccess(state.passport, onPoiClick)
+        is PassportUiState.Error -> Text("Passport not found")
+    }
+}
+
+@Composable
+fun RenderSuccess(passport: Passport, onPoiClick: (place: String) -> Unit) {
+    val maxImageHeight = 250.dp
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
-        // Image de la ville
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(
-                    maxImageHeight + 50.dp
-                )
+                .height(maxImageHeight + 50.dp)
                 .clip(RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp))
-                .background(Color.Gray) // Placeholder pour l'image
-                .zIndex(0f) // Image en arrière-plan
+                .background(Color.White)
         ) {
-            // Placeholder : texte centré pour simuler l'image
-            Text(
-                text = "Illustration de la ville",
-                color = Color.White,
-                fontSize = 24.sp,
-                modifier = Modifier.align(Alignment.Center)
+            AsyncImage(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth(),
+                model = passport.imageUrl,
+                contentScale = ContentScale.Crop,
+                contentDescription = "${passport.name} illustration"
             )
         }
 
-        // Contenu scrollable avec LazyColumn
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            // Spacer pour positionner le contenu sous l'image initialement
             item {
                 Spacer(
                     modifier = Modifier
@@ -75,7 +88,6 @@ fun CityDetailScreen(passport: Passport, onPoiClick: (place: String) -> Unit) {
                 )
             }
 
-            // Contenu de la ville
             item {
                 Column(
                     modifier = Modifier
@@ -87,14 +99,14 @@ fun CityDetailScreen(passport: Passport, onPoiClick: (place: String) -> Unit) {
                     Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
                         Column {
                             Text(
-                                text = "Nantes",
+                                text = passport.name,
                                 style = MaterialTheme.typography.headlineMedium,
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.padding(bottom = 8.dp)
                             )
-                            Text("5 / 14 sites visités")
+                            Text("5 / ${passport.places.size} sites visités")
                         }
-
+                        Medal(passport.color.hexStringToColor())
                         PassportWidget(passport, passport.name, passport.color, passport.icon, {}, true)
                     }
 
@@ -108,8 +120,8 @@ fun CityDetailScreen(passport: Passport, onPoiClick: (place: String) -> Unit) {
                 }
             }
 
-            items(list.size) { index ->
-                PlaceItem(list[index].first, list[index].second, onPoiClick)
+            items(passport.places.size) { index ->
+                PlaceItem(passport.places[index].name, passport.icon, passport.name, passport.color, Random.Default.nextBoolean(), onPoiClick)
             }
 
             item {
@@ -120,7 +132,7 @@ fun CityDetailScreen(passport: Passport, onPoiClick: (place: String) -> Unit) {
                         .padding(16.dp)
                 ) {
                     HistoryWidget()
-                    // Texte Lorem Ipsum
+                    Spacer(Modifier.height(12.dp))
                     Text(
                         text = """
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
@@ -140,25 +152,14 @@ fun CityDetailScreen(passport: Passport, onPoiClick: (place: String) -> Unit) {
                         style = MaterialTheme.typography.bodyMedium,
                         lineHeight = 24.sp
                     )
-
-                    // Padding entre le Lorem Ipsum et la LazyColumn
                     Spacer(modifier = Modifier.height(16.dp))
                 }
             }
 
-            // Padding en bas pour éviter que le contenu ne soit coupé
             item {
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun PreviewScroll() {
-    AppTheme {
-        CityDetailScreen(Passport("id", "2020", "Nantes", "0xFF00BCD4", "\uD83D\uDC18", lat = 0f, lng = 0f, listOf()), {})
     }
 }
 
@@ -176,20 +177,15 @@ fun HistoryWidget() {
     }
 }
 
+@Preview
 @Composable
-fun PlaceItem(name: String, checked: Boolean, onClick: (place: String) -> Unit) {
-    Box(Modifier.background(color = Color.White)) {
-        Card(
-            modifier = Modifier
-                .height(64.dp)
-                .padding(start = 12.dp, end = 12.dp)
-                .fillMaxWidth()
-                .clickable(onClick = { onClick(name) })
-        ) {
-            Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.SpaceBetween, Alignment.CenterVertically) {
-                Text(name, modifier = Modifier.padding(12.dp))
-                Checkbox(checked = checked, enabled = false, onCheckedChange = {})
-            }
-        }
+fun PreviewScroll() {
+    val passports = listOf(
+        Passport("id", "date", "Nantes", "0xFF00BCD4", "\uD83D\uDC18", 0f, 0f, "", listOf()),
+        Passport("id", "date", "Nantes", "0xFF3F78B5", "\uD83D\uDDFC", 0f, 0f, "", listOf())
+    )
+
+    AppTheme {
+        RenderSuccess(passports[0], {})
     }
 }

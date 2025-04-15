@@ -1,11 +1,13 @@
 package com.poly.herewego.presentation.home
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,6 +29,7 @@ import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -55,14 +58,59 @@ import com.poly.herewego.ui.component.PassportWidget
 import com.poly.herewego.ui.theme.AppTheme
 import com.poly.herewego.ui.theme.AppTypography
 
+@Composable
+fun HomeScreen(
+    onProfileClick: () -> Unit,
+    onCategoryClick: (category: String) -> Unit,
+    onSettingsClick: () -> Unit,
+    viewModel: HomeViewModel = hiltViewModel()
+) {
+    val passportState by viewModel.uiState.collectAsState()
+
+    when (val state = passportState) {
+        is HomeUiState.Loading -> HomeLoading()
+        is HomeUiState.Error -> Text(state.message)
+        is HomeUiState.Success -> HomeScreenSuccess(state.data, onProfileClick, onCategoryClick, onSettingsClick)
+    }
+}
+
+@Composable
+fun HomeLoading() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 24.dp, start = 12.dp, end = 12.dp, bottom = 12.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Title("Home")
+        }
+        LoadingIndicator()
+    }
+}
+
+@Composable
+fun LoadingIndicator() {
+    Box(
+        modifier = Modifier.size(24.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
+    }
+}
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun HomeScreen(onProfileClick: () -> Unit, onCategoryClick: (category: Passport) -> Unit, onSettingsClick: () -> Unit) {
-    val viewModel: HomeViewModel = hiltViewModel()
-
+fun HomeScreenSuccess(
+    passports: List<Passport>,
+    onProfileClick: () -> Unit,
+    onCategoryClick: (category: String) -> Unit,
+    onSettingsClick: () -> Unit,
+) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.home_animation))
     var openAlertDialog by remember { mutableStateOf(false) }
-
     if (openAlertDialog) {
         MinimalDialog({ openAlertDialog = false })
     }
@@ -89,7 +137,7 @@ fun HomeScreen(onProfileClick: () -> Unit, onCategoryClick: (category: Passport)
             }
         }
         Box(Modifier.height(24.dp))
-        MyPassports("Mes passeports", viewModel.uiState.collectAsState().value, onCategoryClick)
+        MyPassports("Mes passeports", passports, onCategoryClick)
 //            Box(Modifier.height(12.dp))
 //            Row {
 //                Card(onClick = {}) {
@@ -134,7 +182,7 @@ fun LastDestination(title: String) {
 }
 
 @Composable
-fun MyPassports(title: String, passportList: List<Passport>, onCategoryClick: (data: Passport) -> Unit) {
+fun MyPassports(title: String, passportList: List<Passport>, onCategoryClick: (data: String) -> Unit) {
     Title(title)
     LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
         items(items = passportList, itemContent = { PassportWidget(it, it.name, it.color, it.icon, onCategoryClick) })
@@ -205,7 +253,25 @@ fun MinimalDialog(onDismissRequest: () -> Unit) {
 @Preview
 @Composable
 fun DefaultPreview() {
+    val passports = listOf(
+        Passport("id", "date", "Nantes", "0xFF00BCD4", "\uD83D\uDC18", 0f, 0f, "", listOf()),
+        Passport("id", "date", "Nantes", "0xFF3F78B5", "\uD83D\uDDFC", 0f, 0f, "", listOf())
+    )
+
     AppTheme {
-        HomeScreen({}, {}, {})
+        HomeScreenSuccess(passports, {}, {}, {})
+    }
+}
+
+@Preview
+@Composable
+fun HomeLoadingPreview() {
+    val passports = listOf(
+        Passport("id", "date", "Nantes", "0xFF00BCD4", "\uD83D\uDC18", 0f, 0f, "", listOf()),
+        Passport("id", "date", "Nantes", "0xFF3F78B5", "\uD83D\uDDFC", 0f, 0f, "", listOf())
+    )
+
+    AppTheme {
+        HomeLoading()
     }
 }

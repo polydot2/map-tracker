@@ -2,12 +2,11 @@ package com.poly.herewego.presentation.discover
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.poly.herewego.data.discovery.model.PlaceEntity
+import com.poly.herewego.data.discovery.model.PlaceDto
 import com.poly.herewego.domain.discovery.DiscoveryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -41,6 +40,6 @@ class DiscoveryViewModel @Inject constructor(val discoveryUsecase: DiscoveryUseC
  */
 sealed class DiscoveryUiState {
     object Loading : DiscoveryUiState()
-    data class Success(val data: List<PlaceEntity>) : DiscoveryUiState()
+    data class Success(val data: List<PlaceDto>) : DiscoveryUiState()
     data class Error(val message: String) : DiscoveryUiState()
 }

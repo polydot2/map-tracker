@@ -1,14 +1,13 @@
 package com.poly.herewego.presentation.home
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.poly.herewego.R
 import com.poly.herewego.data.Passport
-import com.poly.herewego.data.discovery.model.PlaceEntity
-import com.poly.herewego.domain.discovery.DiscoveryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,9 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(@ApplicationContext val context: Context) : ViewModel() {
-    private val ERROR_FETCHING_DATA: String = "Error"
-    private val _uiState = MutableStateFlow<List<Passport>>(listOf())
-    val uiState: StateFlow<List<Passport>> = _uiState
+    private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
+    val uiState: StateFlow<HomeUiState> = _uiState
 
     init {
         fetchData()
@@ -30,17 +28,12 @@ class HomeViewModel @Inject constructor(@ApplicationContext val context: Context
 
     private fun fetchData() {
         viewModelScope.launch {
-            val result = getAllPassport(context)
-            _uiState.value = result
-//            _uiState.value = if (result.isSuccess) {
-//                HomeUiState.Success(result.getOrNull() ?: listOf())
-//            } else {
-//                HomeUiState.Error(result.exceptionOrNull()?.message ?: ERROR_FETCHING_DATA)
-//            }
+            val allPassports = getAllPassport(context)
+            _uiState.value = HomeUiState.Success(allPassports)
         }
     }
 
-    fun getAllPassport(context: Context): List<Passport> {
+    private fun getAllPassport(context: Context): List<Passport> {
         return try {
             val inputStream = context.resources.openRawResource(R.raw.all_passports)
             val jsonString = InputStreamReader(inputStream).readText()
@@ -60,6 +53,6 @@ class HomeViewModel @Inject constructor(@ApplicationContext val context: Context
  */
 sealed class HomeUiState {
     object Loading : HomeUiState()
-    data class Success(val data: List<PlaceEntity>) : HomeUiState()
+    data class Success(val data: List<Passport>) : HomeUiState()
     data class Error(val message: String) : HomeUiState()
 }
