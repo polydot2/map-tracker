@@ -6,14 +6,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -42,6 +45,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -80,7 +84,7 @@ fun HomeLoading() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 24.dp, start = 12.dp, end = 12.dp, bottom = 12.dp)
+            .padding(top = 24.dp, bottom = 12.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -110,36 +114,42 @@ fun HomeScreenSuccess(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(top = 24.dp, start = 12.dp, end = 12.dp, bottom = 12.dp)
+            .padding(top = 32.dp, bottom = 12.dp)
     ) {
-        Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween) {
-            Title("Home")
-            Button(onClick = onSettingsClick) {
-                Icon(Icons.Rounded.Settings, contentDescription = "icon settings")
-                Text("Settings")
+        Column(
+            modifier = Modifier
+                .padding(start = 12.dp, end = 12.dp)
+        ) {
+            Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween) {
+                Title("Home")
+                Button(onClick = onSettingsClick) {
+                    Icon(Icons.Rounded.Settings, contentDescription = "icon settings")
+                    Text("Settings")
+                }
             }
-        }
 //            DestinationDiscovery("A la une")
-        MyProfile("", "\"Voir mon profil \uD83D\uDD0E", onProfileClick)
-        Box(Modifier.height(12.dp))
-        Row {
-            Card(onClick = { openAlertDialog = true }) {
-                Text("Voir tout les lieux que j'ai visités \uD83D\uDDFA\uFE0F", modifier = Modifier.padding(12.dp))
+            MyProfile("", "\"Voir mon profil \uD83D\uDD0E", onProfileClick)
+            Box(Modifier.height(12.dp))
+            Row {
+                Card(onClick = { openAlertDialog = true }) {
+                    Text("Voir tout les lieux que j'ai visités \uD83D\uDDFA\uFE0F", modifier = Modifier.padding(12.dp))
+                }
             }
+            Box(Modifier.height(12.dp))
         }
-        Box(Modifier.height(24.dp))
+
         MyPassports("Mes favoris", passports, onCategoryClick)
-//            Box(Modifier.height(12.dp))
-//            Row {
-//                Card(onClick = {}) {
-//                    Text("Voir tout les passports", modifier = Modifier.padding(12.dp))
-//                }
-//            }
-        Button(onClick = {}, Modifier.padding(top = 12.dp)) {
-            Text("Voir tout les passeports")
-        }
-        Box(Modifier.height(24.dp))
+
+        Column(
+            modifier = Modifier
+                .padding(start = 12.dp, end = 12.dp)
+        ) {
+            Button(onClick = {}, Modifier.padding(top = 12.dp)) {
+                Text("Voir tout les passeports")
+            }
+            Box(Modifier.height(24.dp))
 //            FriendAndStats("Mes amis")
+        }
     }
 }
 
@@ -174,8 +184,16 @@ fun LastDestination(title: String) {
 
 @Composable
 fun MyPassports(title: String, passportList: List<Passport>, onCategoryClick: (data: String) -> Unit) {
-    Title(title)
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+    Box(Modifier.padding(start = 12.dp, end = 12.dp)) {
+        Title(title)
+    }
+    LazyRow(
+        Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        contentPadding = PaddingValues(start = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
         items(items = passportList, itemContent = { PassportWidget(it, it.name, it.color, it.icon, onCategoryClick) })
     }
 }

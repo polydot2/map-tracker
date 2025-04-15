@@ -18,7 +18,7 @@ fun ProfileScreen(name: String, onOpenCategory: (category: String) -> Unit, onAd
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 24.dp, start = 12.dp, end = 12.dp, bottom = 12.dp)
+            .padding(top = 32.dp, start = 12.dp, end = 12.dp, bottom = 12.dp)
     ) {
         Title("Profile")
         MyProfile("", "124 lieux visités !", { })
