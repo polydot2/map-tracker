@@ -6,11 +6,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.poly.herewego.ui.theme.AppTypography
 
 @Composable
-fun Title(title: String) {
+fun Title(title: String, bottomPadding: Dp = 12.dp) {
     Log.d("Title", "Recomposing Title")
-    Text(title, style = AppTypography.headlineLarge, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 12.dp))
+    Text(title, style = AppTypography.headlineLarge, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = bottomPadding))
 }

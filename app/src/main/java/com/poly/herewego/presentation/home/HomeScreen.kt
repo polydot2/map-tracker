@@ -53,6 +53,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.poly.herewego.R
 import com.poly.herewego.data.Passport
 import com.poly.herewego.presentation.widgets.Title
+import com.poly.herewego.ui.component.LoadingIndicator
 import com.poly.herewego.ui.component.MyProfile
 import com.poly.herewego.ui.component.PassportWidget
 import com.poly.herewego.ui.theme.AppTheme
@@ -88,16 +89,6 @@ fun HomeLoading() {
             Title("Home")
         }
         LoadingIndicator()
-    }
-}
-
-@Composable
-fun LoadingIndicator() {
-    Box(
-        modifier = Modifier.size(24.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
     }
 }
 
@@ -137,7 +128,7 @@ fun HomeScreenSuccess(
             }
         }
         Box(Modifier.height(24.dp))
-        MyPassports("Mes passeports", passports, onCategoryClick)
+        MyPassports("Mes favoris", passports, onCategoryClick)
 //            Box(Modifier.height(12.dp))
 //            Row {
 //                Card(onClick = {}) {
@@ -266,11 +257,6 @@ fun DefaultPreview() {
 @Preview
 @Composable
 fun HomeLoadingPreview() {
-    val passports = listOf(
-        Passport("id", "date", "Nantes", "0xFF00BCD4", "\uD83D\uDC18", 0f, 0f, "", listOf()),
-        Passport("id", "date", "Nantes", "0xFF3F78B5", "\uD83D\uDDFC", 0f, 0f, "", listOf())
-    )
-
     AppTheme {
         HomeLoading()
     }

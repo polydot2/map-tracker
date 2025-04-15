@@ -188,7 +188,7 @@ fun VisitedStamp(
 }
 
 @Composable
-fun PlaceItem(name: String, icon: String, passportNantes: String, color: String, checked: Boolean, onClick: (place: String) -> Unit) {
+fun PlaceItem(name: String, icon: String, passportName: String, color: String, isVisited: Boolean, onClick: (place: String) -> Unit) {
     Box(
         Modifier
             .background(color = Color.White)
@@ -210,7 +210,7 @@ fun PlaceItem(name: String, icon: String, passportNantes: String, color: String,
                         .size(64.dp)
                         .background(color = Color.Black.copy(alpha = 0.1f), shape = CircleShape)
                 ) {
-                    if (checked)
+                    if (isVisited)
                         VisitedStamp(emoji = icon, name = name, colorPass = color)
                 }
             }
