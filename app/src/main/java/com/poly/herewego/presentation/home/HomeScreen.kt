@@ -114,7 +114,7 @@ fun HomeScreenSuccess(
     ) {
         Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween) {
             Title("Home")
-            Chip(onClick = onSettingsClick) {
+            Button(onClick = onSettingsClick) {
                 Icon(Icons.Rounded.Settings, contentDescription = "icon settings")
                 Text("Settings")
             }

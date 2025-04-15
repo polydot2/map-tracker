@@ -1,5 +1,6 @@
 package com.poly.herewego
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -49,19 +50,21 @@ data class TopLevelRoute<T : Any>(val name: String, val route: T, val icon: Imag
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             AppTheme(
-                dynamicColor = true
+                darkTheme = false,
+                dynamicColor = false
             ) {
                 val navController = rememberNavController()
                 Scaffold(
                     Modifier.navigationBarsPadding(),
 //                    topBar = { topbar() }
                 ) {
-                    NavHostRouter(navController, it)
+                    NavHostRouter(navController, PaddingValues(0.dp))
                 }
             }
         }

@@ -77,7 +77,7 @@ fun PassportSuccess(
     onToggleFavorite: () -> Unit,
     isFavorite: Boolean,
 ) {
-    val maxImageHeight = 250.dp
+    val maxImageHeight = 300.dp
 
     Box(
         modifier = Modifier
@@ -113,7 +113,7 @@ fun PassportSuccess(
                             modifier = Modifier.weight(1f)
                         ) {
                             Title(passport.name, 0.dp)
-                            Chip(onClick = onToggleFavorite) {
+                            Button(onClick = onToggleFavorite) {
                                 Icon(Icons.Rounded.Star, contentDescription = "icon settings")
                                 Text(if (isFavorite) "Retirer des favoris" else "Ajouter aux favoris")
                             }

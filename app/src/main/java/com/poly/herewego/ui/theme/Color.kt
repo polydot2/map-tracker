@@ -1,8 +1,8 @@
 package com.poly.herewego.ui.theme
 import androidx.compose.ui.graphics.Color
 
-val primaryLight = Color(0xFF815512)
-val onPrimaryLight = Color(0xFFFFFFFF)
+val primaryLight = Color(0xFF7E3026) // pirmary button
+val onPrimaryLight = Color(0xFFFFFFFF) // font primary
 val primaryContainerLight = Color(0xFFFFDDB6)
 val onPrimaryContainerLight = Color(0xFF2A1800)
 val secondaryLight = Color(0xFF705B40)
@@ -17,11 +17,11 @@ val errorLight = Color(0xFFBA1A1A)
 val onErrorLight = Color(0xFFFFFFFF)
 val errorContainerLight = Color(0xFFFFDAD6)
 val onErrorContainerLight = Color(0xFF410002)
-val backgroundLight = Color(0xFFFFF8F4)
+val backgroundLight = Color(0xFFFFF8F4) // background
 val onBackgroundLight = Color(0xFF211A13)
-val surfaceLight = Color(0xFFFFF8F4)
+val surfaceLight = Color(0xFF8E9168) // app bar / nav bar
 val onSurfaceLight = Color(0xFF211A13)
-val surfaceVariantLight = Color(0xFFF0E0D0)
+val surfaceVariantLight = Color(0xFF8E9168) // card !!
 val onSurfaceVariantLight = Color(0xFF504539)
 val outlineLight = Color(0xFF827568)
 val outlineVariantLight = Color(0xFFD3C4B4)
