@@ -31,9 +31,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.poly.herewego.R
 import com.poly.herewego.data.Passport
 import com.poly.herewego.ui.theme.AppTheme
 import com.poly.herewego.ui.theme.AppTypography
@@ -140,7 +143,8 @@ fun PassportWidget(
                     Text(
                         text = iconText,
                         modifier = Modifier.align(Alignment.Center),
-                        style = AppTypography.headlineLarge
+                        style = AppTypography.headlineLarge,
+                        fontFamily = FontFamily(Font(R.font.twemoji)),
                     )
                 }
 //                Box(
